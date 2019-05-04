@@ -16,6 +16,11 @@ class MatchesScreen extends StatefulWidget {
   _MatchesScreenState createState() => _MatchesScreenState();
 }
 
+const COMP_WAITING = 0;
+const COMP_RUNNING = 1;
+const COMP_FINISHED = 2;
+
+
 class _MatchesScreenState extends State<MatchesScreen> {
   XmlElement _compData;
   List<XmlElement> _matches;
@@ -26,6 +31,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   int _selectedRound;
   bool _isEmpty = false;
   bool _advanceSending = false;
+  int _compStatus;
 
   @override void initState() {
     super.initState();
@@ -116,6 +122,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
       _currentRound = int.parse(compData.findAllElements("CurrentRound").first.text);
       _selectedRound = _currentRound;
+      _compStatus = int.parse(compData.findElements("RowCompetition").first
+          .findElements("CompetitionStatus").first.text);
       updateWeekMatches();
 
       _advanceSending = false;
@@ -201,7 +209,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
       if (_advanceSending) {
         children += [CircularProgressIndicator()];
-      } else if (_currentRound == _selectedRound) {
+      } else if (_currentRound == _selectedRound &&  _compStatus != COMP_FINISHED) {
         Function onPressed = isReadyToAdvance() ? advanceRound : null;
 
         children += [

@@ -18,11 +18,23 @@ class MatchItem extends StatelessWidget {
     var status = int.parse(matchElement.findElements("IdStatus").first.text);
     var homeScore = matchElement.findElements("HomeScore").first.text;
     var homeTeamId = matchElement.findElements("IdTeamHome").first.children.first.text;
-    var homeTeamName = participants[homeTeamId].findAllElements("Name").first.text;
-    
+    var homeTeam = participants[homeTeamId];
+    var homeTeamName;
+    if (homeTeam == null) {
+      homeTeamName = "Loading...";
+    } else {
+      homeTeamName = participants[homeTeamId].findAllElements("Name").first.text;
+    }
+
     var awayScore = matchElement.findElements("AwayScore").first.text;
     var awayTeamId = matchElement.findElements("IdTeamAway").first.children.first.text;
-    var awayTeamName = participants[awayTeamId].findAllElements("Name").first.text;
+    var awayTeam = participants[awayTeamId];
+    var awayTeamName;
+    if (awayTeam == null) {
+      awayTeamName = "Loading...";
+    } else {
+      awayTeamName = participants[awayTeamId].findAllElements("Name").first.text;
+    }
 
     Function onPressed;
 
