@@ -30,7 +30,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
   int _rounds;
   int _currentRound;
   int _selectedRound;
-  bool _isEmpty = false;
   bool _requestSending = false;
   int _compStatus;
 
@@ -210,7 +209,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
       _rounds = int.parse(compData.findAllElements("NbRounds").first.text);
 
       if (_matches.length == 0) {
-        _isEmpty = true;
         return;
       }
       updateWeekMatches();
@@ -260,7 +258,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ],
         ),
       );
-    } else if (_isEmpty) {
+    } else if (_compStatus == 0) {
       var onPressed;
 
       if (isReadyToStart()) {
@@ -269,7 +267,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
       List<Widget> children = [];
 
       if (_requestSending) {
-        children += [CircularProgressIndicator()];
+        children += [
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: CircularProgressIndicator(),
+          )
+        ];
       } else {
         children += [
           RaisedButton.icon(
