@@ -20,6 +20,11 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     BB2Admin.defaultManager.getCompetitions(widget.leagueId).then((elements) {
         setState(() {
           _competitions = elements.toList();
+          _competitions.sort((a, b) {
+            var aStatus = int.parse(a.findElements("Row").first.findElements("CompetitionStatus").first.text);
+            var bStatus = int.parse(b.findElements("Row").first.findElements("CompetitionStatus").first.text);
+            return aStatus - bStatus;
+          });
         });
       });
   }
@@ -48,28 +53,56 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         ),
       );
     } else {
-      body = ListView.builder(
+      body = ListView.separated(
         padding: EdgeInsets.all(8.0),
         itemCount: _competitions.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
-          var name = _competitions[index]
-              .findAllElements("Name")
+          var compRow = _competitions[index].findElements("Row").first;
+          var name = compRow
+              .findElements("Name")
               .first
               .text;
-          var id = _competitions[index]
-              .findAllElements("Id").first.children.first.text;
+          var id = compRow.findElements("Id").first.children.first.text;
+
+          var status = int.parse(compRow.findElements("CompetitionStatus").first.text);
+
+          var statusText;
+          switch(status) {
+            case 0:
+              var teamMax = int.parse(compRow.findElements("NbTeamsMax").first.text);
+              var teamReg = int.parse(compRow.findElements("NbRegisteredTeams").first.text);
+              if (teamMax == teamReg) {
+                statusText = "Ready to Start";
+              } else {
+                statusText = "Waiting for Teams";
+              }
+              break;
+            case 1:
+              statusText = "Running";
+              break;
+            case 2:
+              statusText = "Completed";
+              break;
+            case 3:
+              statusText = "Paused";
+              break;
+            default:
+              statusText = "Unknown";
+          }
+
           return FlatButton(
               onPressed: () {
                 var title = name;
                 var compScreen = MatchesScreen(title: title, compId: id);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => compScreen));
               },
-              child:Column(
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text('$name', style: TextStyle(fontSize: 24.0)),
-                    Divider()
+                    Text('$statusText', style: TextStyle(fontSize: 20.0)),
                   ]
               ),
           );

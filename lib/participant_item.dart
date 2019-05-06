@@ -8,11 +8,30 @@ class ParticipantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var status = int.parse(participant.findElements("IdTeamCompetitionStatus").first.text);
-    var teamName;
-    var coachName;
 
-    Function onPressed;
+    var teamName;
+    var teamNameElements = participant.findAllElements("RowTeam").first.findElements("Name");
+    if (teamNameElements.isEmpty) {
+      teamName = "Unknown";
+    } else {
+      teamName = teamNameElements.first.text;
+    }
+
+    var coachName;
+    var coachNameElements;
+    if (participant.name.toString() == "CompetitionParticipant") {
+      coachNameElements = participant.findAllElements("NameCoach");
+      var status = int.parse(participant.findElements("IdTeamCompetitionStatus").first.text);
+    } else {
+      coachNameElements = participant.findAllElements("User");
+    }
+
+    if (coachNameElements.isEmpty) {
+      coachName = "AI";
+    } else {
+      coachName = coachNameElements.first.text;
+    }
+
 
     var nameColumn = Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -20,8 +39,7 @@ class ParticipantItem extends StatelessWidget {
         children: [
           Text('$teamName', style: TextStyle(fontSize: 20.0)),
           Padding(padding:EdgeInsets.only(left: 20),
-              child: Text('$coachName',style: TextStyle(fontSize: 20.0)))
-
+              child: Text('$coachName',style: TextStyle(fontSize: 20.0))),
         ]);
 
     var child = Padding(
@@ -33,6 +51,6 @@ class ParticipantItem extends StatelessWidget {
             nameColumn,
           ]),
     );
-    return FlatButton(child: child, onPressed: onPressed,);
+    return child;
   }
 }

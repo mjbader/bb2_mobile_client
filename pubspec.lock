@@ -6,7 +6,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: b2559d4b7e13a9261d53082c71cb563ae11bf7aa
+      resolved-ref: "1635dab25a2d60b0f51918bf6beb696782231c1d"
       url: "https://github.com/mjbader/bb2-net-client.git"
     source: git
     version: "0.0.0"
@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  flutter_sticky_header:
+    dependency: "direct main"
+    description:
+      name: flutter_sticky_header
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
