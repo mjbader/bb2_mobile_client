@@ -59,6 +59,10 @@ class _LoginScreenState extends State<LoginScreen> {
     'hindi',
     'lumibot',
     'lumiboto',
+    'larkstar',
+    'meshuggah',
+    'seanmantv',
+    'steakmittens'
   ];
 
   void loginPressed() async {
