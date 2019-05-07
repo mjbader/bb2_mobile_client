@@ -6,9 +6,10 @@ import 'package:bb2_mobile_app/participant_item.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class ParticipantList extends StatefulWidget {
-  ParticipantList({Key key, this.compId, this.participants}) : super(key: key);
+  ParticipantList({Key key, this.compId, this.participants, this.maxTeams}) : super(key: key);
   final List<XmlElement> participants;
   final String compId;
+  final int maxTeams;
 
   @override
   _ParticipantListState createState() => _ParticipantListState();
@@ -22,14 +23,38 @@ class _ParticipantListState extends State<ParticipantList> {
     refreshData();
   }
 
-  void setData(XmlElement compData) {}
-
   void refreshData() {
     BB2Admin.defaultManager.getSentTickets(widget.compId).then((tickets) {
       setState(() {
         teamsInvited = tickets.toList();
       });
     });
+  }
+
+  SliverStickyHeader createList({String header, List<XmlElement> elements}) {
+    return SliverStickyHeader(
+        header: new Container(
+          height: 40.0,
+          color: Colors.red,
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.centerLeft,
+          child: new Text(
+            header,
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        ),
+        sliver: SliverList(
+            delegate:
+                SliverChildBuilderDelegate((BuildContext context, int index) {
+          return Column(
+            children: <Widget>[
+              ParticipantItem(
+                participant: elements[index],
+              ),
+              Divider()
+            ],
+          );
+        }, childCount: elements.length)));
   }
 
   @override
@@ -48,18 +73,27 @@ class _ParticipantListState extends State<ParticipantList> {
               padding: const EdgeInsets.only(top: 10.0),
               child: CircularProgressIndicator(),
             ),
-//            Text(
-//              '$_counter',
-//              style: Theme.of(context).textTheme.display1,
-//            ),
           ],
         ),
       );
     } else {
       List<Widget> slivers = List<Widget>();
 
-      if (widget.participants.length == 0 && teamsInvited.length == 0) {
-        return Center(
+      if (widget.participants.length > 0) {
+        var numMembers = widget.participants.length;
+        slivers += [
+          createList(header: 'Participants - ${numMembers}/${widget.maxTeams}', elements: widget.participants),
+        ];
+      }
+
+      if (teamsInvited.length > 0) {
+        slivers += [
+          createList(header: 'Invited', elements: teamsInvited),
+        ];
+      }
+
+      if (slivers.isEmpty) {
+        body = Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -69,56 +103,9 @@ class _ParticipantListState extends State<ParticipantList> {
             ],
           ),
         );
+      } else {
+        body = CustomScrollView(shrinkWrap: true, slivers: slivers);
       }
-
-      if (widget.participants.length > 0) {
-        slivers += [
-          SliverStickyHeader(
-              header: new Container(
-                height: 40.0,
-                color: Colors.red,
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
-                child: new Text(
-                  'Participants',
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-              sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                return ParticipantItem(
-                  participant: widget.participants[index],
-                );
-              }, childCount: widget.participants.length)))
-        ];
-      }
-
-      if (teamsInvited.length > 0) {
-        slivers += [
-          SliverStickyHeader(
-            header: new Container(
-              height: 40.0,
-              color: Colors.red,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerLeft,
-              child: new Text(
-                'Invited',
-                style: const TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ),
-            sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-              return ParticipantItem(
-                participant: teamsInvited[index],
-              );
-            }, childCount: teamsInvited.length)),
-          )
-        ];
-      }
-
-      body = CustomScrollView(shrinkWrap: true, slivers: slivers);
     }
 
     return Scaffold(

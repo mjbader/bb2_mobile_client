@@ -75,7 +75,8 @@ class _LeagueScreenState extends State<LeagueScreen> {
           // the App.build method, and use it to set our appbar title.
           title: Text("Leagues"),
         ),
-        body: ListView.builder(
+        body: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) => Divider(),
           padding: EdgeInsets.all(8.0),
 //          itemExtent: 50.0,
           itemCount: _leagues.length,
@@ -90,10 +91,9 @@ class _LeagueScreenState extends State<LeagueScreen> {
                 },
                 child:Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                 Text('$name', style: TextStyle(fontSize: 24.0)),
-                Divider()
               ])
             );
           },

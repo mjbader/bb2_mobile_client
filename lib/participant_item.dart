@@ -21,7 +21,6 @@ class ParticipantItem extends StatelessWidget {
     var coachNameElements;
     if (participant.name.toString() == "CompetitionParticipant") {
       coachNameElements = participant.findAllElements("NameCoach");
-      var status = int.parse(participant.findElements("IdTeamCompetitionStatus").first.text);
     } else {
       coachNameElements = participant.findAllElements("User");
     }
@@ -37,7 +36,7 @@ class ParticipantItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('$teamName', style: TextStyle(fontSize: 20.0)),
+          Text('$teamName', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold)),
           Padding(padding:EdgeInsets.only(left: 20),
               child: Text('$coachName',style: TextStyle(fontSize: 20.0))),
         ]);
