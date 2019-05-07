@@ -32,6 +32,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
   int _selectedRound;
   bool _requestSending = false;
   int _compStatus;
+  var _maxTeams;
+  var _regTeams;
 
   @override
   void initState() {
@@ -85,11 +87,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   bool isReadyToStart() {
     if (_compData != null) {
-      var compRow = _compData.findElements("RowCompetition").first;
-      var teamMax = int.parse(compRow.findElements("NbTeamsMax").first.text);
-      var teamReg =
-      int.parse(compRow.findElements("NbRegisteredTeams").first.text);
-      return _compStatus == 0 && teamReg == teamMax;
+      return _compStatus == 0 && _regTeams == _maxTeams;
     }
     return false;
   }
@@ -194,6 +192,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
         return players;
       });
 
+      _maxTeams = int.parse(compData
+          .findElements("RowCompetition")
+          .first
+          .findElements("NbTeamsMax")
+          .first
+          .text);
+      _regTeams = int.parse(compData
+          .findElements("RowCompetition")
+          .first
+          .findElements("NbRegisteredTeams")
+          .first
+          .text);
+
       _currentRound =
           int.parse(compData.findAllElements("CurrentRound").first.text);
       _selectedRound = _currentRound;
@@ -208,10 +219,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
       _rounds = int.parse(compData.findAllElements("NbRounds").first.text);
 
-      if (_matches.length == 0) {
-        return;
+      if (_matches.length != 0) {
+        updateWeekMatches();
       }
-      updateWeekMatches();
     });
   }
 
@@ -226,13 +236,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void goToParticipants() {
+    var inComp = _participants.values.where((element) {
+      var status =
+          int.parse(element.findElements("IdTeamCompetitionStatus").first.text);
+      return status == 1;
+    });
+
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ParticipantsScreen(
                   title: "${widget.title} - Participants",
-                  participants: _participants.values.toList(),
+                  participants: inComp.toList(),
                   compId: widget.compId,
+                  maxTeams: _maxTeams,
                 )));
   }
 
@@ -251,10 +268,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
               padding: const EdgeInsets.only(top: 10.0),
               child: CircularProgressIndicator(),
             ),
-//            Text(
-//              '$_counter',
-//              style: Theme.of(context).textTheme.display1,
-//            ),
           ],
         ),
       );
@@ -269,30 +282,36 @@ class _MatchesScreenState extends State<MatchesScreen> {
       if (_requestSending) {
         children += [
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(20),
             child: CircularProgressIndicator(),
           )
         ];
       } else {
         children += [
-          RaisedButton.icon(
-            icon: Icon(Icons.play_arrow),
-            label: Text('Start Week'),
-            onPressed: onPressed,
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: RaisedButton.icon(
+              icon: Icon(Icons.play_arrow),
+              label: Text('Start Week'),
+              onPressed: onPressed,
+            ),
           )
         ];
       }
-      children += [new Expanded(child: ParticipantList(
-        compId: widget.compId,
-        participants: _participants.values.toList(),
-      ))];
+      children += [
+        new Expanded(
+            child: ParticipantList(
+                compId: widget.compId,
+                participants: _participants.values.toList(),
+                maxTeams: _maxTeams))
+      ];
 
       body = Column(
         children: children,
       );
     } else {
-      var listView = ListView.builder(
-//        padding: EdgeInsets.all(8.0),
+      var listView = ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemCount: _weekMatches.length,
         itemBuilder: (BuildContext context, int index) {
           var matchData = _weekMatches[index]
@@ -305,7 +324,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MatchItem(matchElement: matchData, participants: _participants),
-                Divider()
               ]);
         },
       );

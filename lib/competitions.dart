@@ -102,7 +102,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text('$name', style: TextStyle(fontSize: 24.0)),
-                    Text('$statusText', style: TextStyle(fontSize: 20.0)),
+                    Text('$statusText', style: TextStyle(fontSize: 20.0, color: Colors.black54)),
                   ]
               ),
           );
