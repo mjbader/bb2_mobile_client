@@ -18,7 +18,59 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final _whiteList = [
+    'rebbl',
+    'fullmetalcos',
+    'miraskadu',
+    'luminous',
+    'bleedinghippy',
+    'isenmike',
+    'kejiruze',
+    'majorbyte',
+    'rumblebee',
+    'schlice',
+    'munkey chunks',
+    'morka',
+    'cakengrad',
+    'superfedtv',
+    'spicasaurus',
+    'gerbear',
+    'tomast',
+    'mmcnaughton4',
+    'mystaes',
+    'holes',
+    'kallisti maya',
+    'hindi',
+    'archxl',
+    'zeazetta',
+    'gypsy prince',
+    'chubstep_',
+    'he roto su cara',
+    'one30',
+    '#420nochin',
+    'shadorra',
+    'docmarc',
+    'hummersepp',
+    'rusty seabutter',
+    'tommo',
+    'krusader',
+    'liamcoulston',
+    'lyskaris',
+    'hindi',
+    'lumibot',
+    'lumiboto',
+  ];
+
   void loginPressed() async {
+    if (!_whiteList.contains(_username.toLowerCase())) {
+      setState(() {
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          content: new Text("User has no rebbl access"),
+        ));
+      });
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
