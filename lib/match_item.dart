@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
+import 'types.dart';
 
 class MatchItem extends StatelessWidget {
   final XmlElement matchElement;
@@ -9,8 +10,68 @@ class MatchItem extends StatelessWidget {
 
   const MatchItem({Key key, this.matchElement, this.participants}) : super(key:key);
 
-  void _matchSelected() {
-
+  void _matchSelected(int status, BuildContext context, Widget match) async {
+//    if (true) {//(status == MatchStatus.unvalidated) {
+//      switch (await showDialog<String>(
+//          context: context,
+//          builder: (BuildContext context) {
+//            return SimpleDialog(
+//              title: const Text('Admin Match Options'),
+//              children: <Widget>[
+//                SimpleDialogOption(
+//                  onPressed: () { Navigator.pop(context, "naha"); },
+//                  child: Row(children: <Widget>[Icon(Icons.check), Text('  Validate', style: TextStyle(fontSize: 20))],),
+//                ),
+//                SimpleDialogOption(
+//                  onPressed: () { Navigator.pop(context, "baha"); },
+//                  child: Row(children: <Widget>[Icon(Icons.cancel), Text('  Reset', style: TextStyle(fontSize: 20))],),
+//                ),
+//              ],
+//            );
+//          }
+//      )) {
+//        case "naha":
+//          showDialog(context: context, builder: (BuildContext context) {
+//            return AlertDialog(title: Text("Are you sure wish to validate this match?"),
+//              content: SingleChildScrollView(child: match),
+//              actions: <Widget>[
+//              FlatButton(
+//                child: Text('Cancel'),
+//                onPressed: () {
+//                  Navigator.of(context).pop();
+//                },
+//              ),
+//              FlatButton(
+//                child: Text('Yes'),
+//                onPressed: () {
+//                  Navigator.of(context).pop();
+//                },
+//              ),
+//            ],);
+//          });
+//          break;
+//        case "baha":
+//          showDialog(context: context, builder: (BuildContext context) {
+//            return AlertDialog(title: Text("Are you sure wish to reset this match?"),
+//              content: SingleChildScrollView(child: match),
+//              actions: <Widget>[
+//                FlatButton(
+//                  child: Text('Cancel'),
+//                  onPressed: () {
+//                    Navigator.of(context).pop();
+//                  },
+//                ),
+//                FlatButton(
+//                  child: Text('Yes'),
+//                  onPressed: () {
+//                    Navigator.of(context).pop();
+//                  },
+//                ),
+//              ],);
+//          });
+//          break;
+//      }
+//    }
   }
 
   @override
@@ -38,17 +99,12 @@ class MatchItem extends StatelessWidget {
 
     Function onPressed;
 
-    if (status == 0) {
+    if (status == MatchStatus.unplayed) {
       homeScore = '?';
       awayScore = '?';
     }
 
-    if (status != 2) {
-      onPressed = _matchSelected;
-    }
-
     var scoreColumn = Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('$homeScore', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
@@ -56,7 +112,6 @@ class MatchItem extends StatelessWidget {
         ]);
 
     var teamColumn = Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('$homeTeamName', style: TextStyle(fontSize: 20.0)),
@@ -73,6 +128,11 @@ class MatchItem extends StatelessWidget {
             scoreColumn,
           ]),
     );
+
+    if (status != MatchStatus.validated) {
+      onPressed = () => _matchSelected(status, context, teamColumn);
+    }
+
     return FlatButton(child: child, onPressed: onPressed,);
   }
 }

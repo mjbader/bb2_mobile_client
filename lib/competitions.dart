@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/matches.dart';
+import 'types.dart';
 import 'package:xml/xml.dart';
 
 class CompetitionsScreen extends StatefulWidget {
@@ -69,7 +70,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 
           var statusText;
           switch(status) {
-            case 0:
+            case CompetitionStatus.waiting:
               var teamMax = int.parse(compRow.findElements("NbTeamsMax").first.text);
               var teamReg = int.parse(compRow.findElements("NbRegisteredTeams").first.text);
               if (teamMax == teamReg) {
@@ -78,17 +79,36 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                 statusText = "Waiting for Teams";
               }
               break;
-            case 1:
+            case CompetitionStatus.running:
               statusText = "Running";
               break;
-            case 2:
+            case CompetitionStatus.completed:
               statusText = "Completed";
               break;
-            case 3:
+            case CompetitionStatus.paused:
               statusText = "Paused";
               break;
             default:
               statusText = "Unknown";
+          }
+
+          var type = int.parse(compRow.findElements("IdCompetitionTypes").first.text);
+          var compTypeText;
+          switch(type) {
+            case CompetitionType.roundRobin:
+              compTypeText = "Round Robin";
+              break;
+            case CompetitionType.knockout:
+              compTypeText = "Knockout";
+              break;
+            case CompetitionType.ladder:
+              compTypeText = "Ladder";
+              break;
+            case CompetitionType.swiss:
+              compTypeText = "Swiss";
+              break;
+            default:
+              compTypeText = "Unknown";
           }
 
           return FlatButton(
@@ -102,7 +122,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text('$name', style: TextStyle(fontSize: 24.0)),
-                    Text('$statusText', style: TextStyle(fontSize: 20.0, color: Colors.black54)),
+                    Text('$compTypeText', style: TextStyle(fontSize: 18.0, color: Colors.black87)),
+                    Text('$statusText', style: TextStyle(fontSize: 18.0, color: Colors.black54)),
                   ]
               ),
           );

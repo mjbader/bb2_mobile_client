@@ -82,7 +82,7 @@ class _ParticipantListState extends State<ParticipantList> {
       if (widget.participants.length > 0) {
         var numMembers = widget.participants.length;
         slivers += [
-          createList(header: 'Participants - ${numMembers}/${widget.maxTeams}', elements: widget.participants),
+          createList(header: 'Participants - $numMembers/${widget.maxTeams}', elements: widget.participants),
         ];
       }
 
