@@ -40,7 +40,7 @@ class _ParticipantListState extends State<ParticipantList> {
           alignment: Alignment.centerLeft,
           child: new Text(
             header,
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),
         sliver: SliverList(

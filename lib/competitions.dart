@@ -80,7 +80,14 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               }
               break;
             case CompetitionStatus.running:
+              var rounds = int.parse(compRow.findElements("NbRounds").first.text);
+              var curRound = int.parse(compRow.findElements("CurrentRound").first.text);
+
               statusText = "Running";
+
+              if (rounds > 0) {
+                statusText +=  " - Round $curRound/$rounds";
+              }
               break;
             case CompetitionStatus.completed:
               statusText = "Completed";
@@ -102,7 +109,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               compTypeText = "Knockout";
               break;
             case CompetitionType.ladder:
-              compTypeText = "Ladder";
+              compTypeText = "Ladder (Does not work TODO)";
               break;
             case CompetitionType.swiss:
               compTypeText = "Swiss";
@@ -121,9 +128,9 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('$name', style: TextStyle(fontSize: 24.0)),
-                    Text('$compTypeText', style: TextStyle(fontSize: 18.0, color: Colors.black87)),
-                    Text('$statusText', style: TextStyle(fontSize: 18.0, color: Colors.black54)),
+                    Text('$name', style: TextStyle(fontSize: 18.0)),
+                    Text('$compTypeText', style: TextStyle(fontSize: 16.0, color: Colors.black87)),
+                    Text('$statusText', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
                   ]
               ),
           );

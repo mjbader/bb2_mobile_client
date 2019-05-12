@@ -76,9 +76,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
           title: Text("Leagues"),
         ),
         body: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) => Divider(),
-          padding: EdgeInsets.all(8.0),
-//          itemExtent: 50.0,
+          separatorBuilder: (BuildContext context, int index) => Divider(height: 4,),
           itemCount: _leagues.length,
           itemBuilder: (BuildContext context, int index) {
             var name = _leagues[index].findAllElements("Name").first.text;
@@ -93,7 +91,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                Text('$name', style: TextStyle(fontSize: 24.0)),
+                Text('$name', style: TextStyle(fontSize: 18.0)),
               ])
             );
           },

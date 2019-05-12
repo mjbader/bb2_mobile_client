@@ -8,6 +8,7 @@ import 'package:BB2Admin/bb2admin.dart';
 
 import 'package:bb2_mobile_app/match_item.dart';
 import 'participant_list.dart';
+import 'types.dart';
 
 class MatchesScreen extends StatefulWidget {
   MatchesScreen({Key key, this.title, this.compId}) : super(key: key);
@@ -18,9 +19,7 @@ class MatchesScreen extends StatefulWidget {
   _MatchesScreenState createState() => _MatchesScreenState();
 }
 
-const COMP_WAITING = 0;
-const COMP_RUNNING = 1;
-const COMP_FINISHED = 2;
+enum _MatchOptions { validate, reset }
 
 class _MatchesScreenState extends State<MatchesScreen> {
   XmlElement _compData;
@@ -32,8 +31,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
   int _selectedRound;
   bool _requestSending = false;
   int _compStatus;
-  var _maxTeams;
-  var _regTeams;
+  int _maxTeams;
+  int _regTeams;
+  int _compType;
 
   @override
   void initState() {
@@ -179,6 +179,127 @@ class _MatchesScreenState extends State<MatchesScreen> {
         });
   }
 
+  void _validateMatch(String matchId) {
+    var compId = _compData
+        .findAllElements("RowCompetition")
+        .first
+        .findElements("Id")
+        .first
+        .children
+        .first
+        .text;
+
+    setState(() {
+      _matches = null;
+    });
+
+    BB2Admin.defaultManager.validateMatch(matchId, compId).then((data) => setData(data));
+  }
+
+  void _resetMatch(String matchId) {
+    var compId = _compData
+        .findAllElements("RowCompetition")
+        .first
+        .findElements("Id")
+        .first
+        .children
+        .first
+        .text;
+
+    setState(() {
+      _matches = null;
+    });
+
+    BB2Admin.defaultManager.resetMatch(matchId, compId).then((data) => setData(data));
+  }
+
+  void _matchSelected(int status, BuildContext context, Widget match, String matchId) async {
+    if (status == MatchStatus.unvalidated) {
+      switch (await showDialog<_MatchOptions>(
+          context: context,
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              title: const Text('Admin Match Options'),
+              children: <Widget>[
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, _MatchOptions.validate);
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.check),
+                      Text('  Validate', style: TextStyle(fontSize: 20))
+                    ],
+                  ),
+                ),
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, _MatchOptions.reset);
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.cancel),
+                      Text('  Reset', style: TextStyle(fontSize: 20))
+                    ],
+                  ),
+                ),
+              ],
+            );
+          })) {
+        case _MatchOptions.validate:
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Are you sure wish to validate this match?"),
+                  content: SingleChildScrollView(child: match),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Validate'),
+                      onPressed: () {
+                        _validateMatch(matchId);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+          break;
+        case _MatchOptions.reset:
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Are you sure wish to reset this match?"),
+                  content: SingleChildScrollView(child: match),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Reset'),
+                      onPressed: () {
+                        _resetMatch(matchId);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+          break;
+      }
+    }
+  }
+
   void setData(XmlElement compData) {
     setState(() {
       _compData = compData;
@@ -204,6 +325,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
           .findElements("NbRegisteredTeams")
           .first
           .text);
+
+      _compType = int.parse(compData
+          .findElements("RowCompetition")
+          .first
+          .findElements("IdCompetitionTypes")
+          .first.text);
 
       _currentRound =
           int.parse(compData.findAllElements("CurrentRound").first.text);
@@ -271,7 +398,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ],
         ),
       );
-    } else if (_compStatus == 0) {
+    } else if (_compStatus == 0 || _compType == CompetitionType.ladder) {
       var onPressed;
 
       if (isReadyToStart()) {
@@ -292,7 +419,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             padding: EdgeInsets.all(10),
             child: RaisedButton.icon(
               icon: Icon(Icons.play_arrow),
-              label: Text('Start Week'),
+              label: Text('Start Competition'),
               onPressed: onPressed,
             ),
           )
@@ -319,11 +446,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
               .first
               .findElements("RowCompetitionMatch")
               .first;
+
+          Function onPressed;
+          var matchItem = MatchItem(matchElement: matchData, participants: _participants);
+          var status = int.parse(matchData.findElements("IdStatus").first.text);
+          var id = matchData.findElements("Id").first.children.first.text;
+          if (status != MatchStatus.validated) {
+            onPressed = () => _matchSelected(status, context, matchItem, id);
+          }
+
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MatchItem(matchElement: matchData, participants: _participants),
+              FlatButton(child: matchItem, onPressed: onPressed,),
               ]);
         },
       );
@@ -350,7 +486,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       if (_requestSending) {
         children += [CircularProgressIndicator()];
       } else if (_currentRound == _selectedRound &&
-          _compStatus != COMP_FINISHED) {
+          _compStatus != CompetitionStatus.completed) {
         Function onPressed = isReadyToAdvance() ? advanceRound : null;
 
         children += [

@@ -6,7 +6,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "1635dab25a2d60b0f51918bf6beb696782231c1d"
+      resolved-ref: "10f12be66d0fe1677ad39f44008e34bb7ab420e9"
       url: "https://github.com/mjbader/bb2-net-client.git"
     source: git
     version: "0.0.0"

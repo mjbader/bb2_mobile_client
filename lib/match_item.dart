@@ -10,70 +10,6 @@ class MatchItem extends StatelessWidget {
 
   const MatchItem({Key key, this.matchElement, this.participants}) : super(key:key);
 
-  void _matchSelected(int status, BuildContext context, Widget match) async {
-//    if (true) {//(status == MatchStatus.unvalidated) {
-//      switch (await showDialog<String>(
-//          context: context,
-//          builder: (BuildContext context) {
-//            return SimpleDialog(
-//              title: const Text('Admin Match Options'),
-//              children: <Widget>[
-//                SimpleDialogOption(
-//                  onPressed: () { Navigator.pop(context, "naha"); },
-//                  child: Row(children: <Widget>[Icon(Icons.check), Text('  Validate', style: TextStyle(fontSize: 20))],),
-//                ),
-//                SimpleDialogOption(
-//                  onPressed: () { Navigator.pop(context, "baha"); },
-//                  child: Row(children: <Widget>[Icon(Icons.cancel), Text('  Reset', style: TextStyle(fontSize: 20))],),
-//                ),
-//              ],
-//            );
-//          }
-//      )) {
-//        case "naha":
-//          showDialog(context: context, builder: (BuildContext context) {
-//            return AlertDialog(title: Text("Are you sure wish to validate this match?"),
-//              content: SingleChildScrollView(child: match),
-//              actions: <Widget>[
-//              FlatButton(
-//                child: Text('Cancel'),
-//                onPressed: () {
-//                  Navigator.of(context).pop();
-//                },
-//              ),
-//              FlatButton(
-//                child: Text('Yes'),
-//                onPressed: () {
-//                  Navigator.of(context).pop();
-//                },
-//              ),
-//            ],);
-//          });
-//          break;
-//        case "baha":
-//          showDialog(context: context, builder: (BuildContext context) {
-//            return AlertDialog(title: Text("Are you sure wish to reset this match?"),
-//              content: SingleChildScrollView(child: match),
-//              actions: <Widget>[
-//                FlatButton(
-//                  child: Text('Cancel'),
-//                  onPressed: () {
-//                    Navigator.of(context).pop();
-//                  },
-//                ),
-//                FlatButton(
-//                  child: Text('Yes'),
-//                  onPressed: () {
-//                    Navigator.of(context).pop();
-//                  },
-//                ),
-//              ],);
-//          });
-//          break;
-//      }
-//    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var status = int.parse(matchElement.findElements("IdStatus").first.text);
@@ -97,8 +33,6 @@ class MatchItem extends StatelessWidget {
       awayTeamName = participants[awayTeamId].findAllElements("Name").first.text;
     }
 
-    Function onPressed;
-
     if (status == MatchStatus.unplayed) {
       homeScore = '?';
       awayScore = '?';
@@ -107,15 +41,15 @@ class MatchItem extends StatelessWidget {
     var scoreColumn = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('$homeScore', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-          Text('$awayScore', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+          Text('$homeScore', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+          Text('$awayScore', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
         ]);
 
     var teamColumn = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('$homeTeamName', style: TextStyle(fontSize: 20.0)),
-          Text('$awayTeamName', style: TextStyle(fontSize: 20.0)),
+          Text('$homeTeamName', style: TextStyle(fontSize: 16.0)),
+          Text('$awayTeamName', style: TextStyle(fontSize: 16.0)),
         ]);
 
     var child = Padding(
@@ -129,10 +63,6 @@ class MatchItem extends StatelessWidget {
           ]),
     );
 
-    if (status != MatchStatus.validated) {
-      onPressed = () => _matchSelected(status, context, teamColumn);
-    }
-
-    return FlatButton(child: child, onPressed: onPressed,);
+    return child;
   }
 }
