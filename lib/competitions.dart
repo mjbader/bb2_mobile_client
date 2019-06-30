@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
+
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/matches.dart';
 import 'types.dart';
@@ -44,7 +47,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: CircularProgressIndicator(),
+              child: PlatformCircularProgressIndicator(),
             ),
 //            Text(
 //              '$_counter',
@@ -64,7 +67,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               .findElements("Name")
               .first
               .text;
-          var id = compRow.findElements("Id").first.children.first.text;
+          var id = compRow.findElements("Id").first.firstChild.text;
 
           var status = int.parse(compRow.findElements("CompetitionStatus").first.text);
 
@@ -122,7 +125,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               onPressed: () {
                 var title = name;
                 var compScreen = MatchesScreen(title: title, compId: id);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => compScreen));
+                Navigator.push(context, platformPageRoute(builder: (context) => compScreen));
               },
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -138,17 +141,17 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            tooltip: 'Settings',
-          )
-        ],
+//        trailingActions: <Widget>[
+//          IconButton(
+//            icon: Icon(Icons.settings),
+//            tooltip: 'Settings',
+//          )
+//        ],
       ),
-      body: body // This trailing comma makes auto-formatting nicer for build methods.
+      body: SafeArea(child: body, bottom: false,) // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

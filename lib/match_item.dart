@@ -14,7 +14,7 @@ class MatchItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var status = int.parse(matchElement.findElements("IdStatus").first.text);
     var homeScore = matchElement.findElements("HomeScore").first.text;
-    var homeTeamId = matchElement.findElements("IdTeamHome").first.children.first.text;
+    var homeTeamId = matchElement.findElements("IdTeamHome").first.firstChild.text;
     var homeTeam = participants[homeTeamId];
     var homeTeamName;
     if (homeTeam == null) {
@@ -24,7 +24,7 @@ class MatchItem extends StatelessWidget {
     }
 
     var awayScore = matchElement.findElements("AwayScore").first.text;
-    var awayTeamId = matchElement.findElements("IdTeamAway").first.children.first.text;
+    var awayTeamId = matchElement.findElements("IdTeamAway").first.firstChild.text;
     var awayTeam = participants[awayTeamId];
     var awayTeamName;
     if (awayTeam == null) {

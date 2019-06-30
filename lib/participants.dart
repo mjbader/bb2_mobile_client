@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
 import 'package:xml/xml.dart';
 import 'participant_list.dart';
 
@@ -14,11 +16,11 @@ class ParticipantsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var body = ParticipantList(compId: compId, participants: participants, maxTeams: maxTeams,);
 
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: Text(this.title),
       ),
-      body: body,
+      body: SafeArea(child: body, bottom: false,),
     );
   }
 }

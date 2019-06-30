@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/leagues.dart';
 import 'package:bb2_mobile_app/login.dart';
@@ -43,7 +45,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
       if (username.isNotEmpty && password.isNotEmpty) {
         BB2Admin.defaultManager.connect(username,password).then((result) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LeagueScreen()));
+          Navigator.pushReplacement(context, platformPageRoute(builder: (context) => LeagueScreen()));
         }, onError: (error) {
           navigateToLogin();
         });
@@ -57,15 +59,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void navigateToLogin() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.pushReplacement(context, platformPageRoute(builder: (context) => LoginScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PlatformScaffold(
       backgroundColor: Colors.white,
       body: Center(
-          child: CircularProgressIndicator()
+          child: PlatformCircularProgressIndicator()
       )
     );
   }

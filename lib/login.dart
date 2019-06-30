@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
+import 'dart:io';
+
+import 'cross_platform_widgets/cptextfield.dart';
+
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/leagues.dart';
 import 'package:flutter_keychain/flutter_keychain.dart';
@@ -66,13 +72,28 @@ class _LoginScreenState extends State<LoginScreen> {
     'harringzord'
   ];
 
+  void showError(String error) {
+    if (Platform.isAndroid) {
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: new Text(error),
+      ));
+    } else {
+      showPlatformDialog(
+        context: context,
+        builder: (_) => PlatformAlertDialog(
+          title: Text('Error'),
+          content: Text(error),
+          actions: <Widget>[
+            PlatformDialogAction(child: Text('OK'), onPressed: () => Navigator.of(context).pop(),),
+          ],
+        ),
+      );
+    }
+  }
+
   void loginPressed() async {
     if (!_whiteList.contains(_username.toLowerCase())) {
-      setState(() {
-        _scaffoldKey.currentState.showSnackBar(new SnackBar(
-          content: new Text("User has no rebbl access"),
-        ));
-      });
+      showError("User has no rebbl access");
       return;
     }
 
@@ -90,9 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }, onError: (error) {
       setState(() {
         _isLoading = false;
-        _scaffoldKey.currentState.showSnackBar(new SnackBar(
-          content: new Text(error.toString()),
-        ));
+        showError(error.toString());
       });
     });
   }
@@ -105,19 +124,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     Widget button =  Builder(
-        builder: (context) => RaisedButton(
+        builder: (context) => PlatformButton(
       child: Text('Login'),
       onPressed: isLoginButtonEnabled() ? () => loginPressed() : null,
       )
     );
 
     if (_isLoading) {
-      button = CircularProgressIndicator();
+      button = PlatformCircularProgressIndicator();
     }
 
-    return Scaffold(
+    return PlatformScaffold(
       backgroundColor: Colors.red,
-      key: _scaffoldKey,
+      widgetKey: _scaffoldKey,
       body: Center(
           child: Padding(
               padding: EdgeInsets.all(20),
@@ -138,29 +157,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text("Admin Client Alpha",
                       style: TextStyle(fontSize: 20),
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                          labelText: 'Username'
-                      ),
+                    CPTextField(
+                      placeholder: 'Username',
                       onChanged: (username) => setState(() {
                         _username = username;
                       }),
                     ),
-                    TextField(
+                    CPTextField(
                       obscureText: true,
-                      decoration: InputDecoration(
-                          labelText: 'Password'
-                      ),
+                      placeholder:'Password',
                       onChanged: (password) => setState(() {
                         _password = password;
                       }),
                     ),
-                    CheckboxListTile(
-                      title: Text('Remember Me'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[Text('Remember Me  '),
+                    PlatformSwitch(
                       value: _rememberMe,
                       onChanged: (value) => setState(() {
                         _rememberMe = value;
-                      }),),
+                      }),),],),
                     Padding(
                       padding: EdgeInsets.only(bottom: 10),
                       child: button

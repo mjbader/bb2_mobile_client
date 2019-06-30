@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/competitions.dart';
 import 'package:xml/xml.dart';
@@ -24,79 +26,52 @@ class _LeagueScreenState extends State<LeagueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    var body;
+
     if (_leagues == null) {
-      return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text("Leagues"),
-        ),
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            // Column is also layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Getting Leagues...',
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: CircularProgressIndicator(),
-              ),
-            ],
-          ),
+      body = Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Getting Leagues...',
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: PlatformCircularProgressIndicator(),
+            ),
+          ],
         ),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text("Leagues"),
-        ),
-        body: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) => Divider(height: 4,),
-          itemCount: _leagues.length,
-          itemBuilder: (BuildContext context, int index) {
-            var name = _leagues[index].findAllElements("Name").first.text;
-            var leagueId = _leagues[index].findAllElements("RowLeague").first.findAllElements("Id").first.children.first.text;
-            return FlatButton(
-                onPressed: () {
-                  var title = name;
-                  var compScreen = CompetitionsScreen(title: title, leagueId: leagueId);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => compScreen));
-                },
-                child:Column(
+      body = ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => Divider(height: 4,),
+        itemCount: _leagues.length,
+        itemBuilder: (BuildContext context, int index) {
+          var name = _leagues[index].findAllElements("Name").first.text;
+          var leagueId = _leagues[index].findAllElements("RowLeague").first.findAllElements("Id").first.firstChild.text;
+          return FlatButton(
+              onPressed: () {
+                var title = name;
+                var compScreen = CompetitionsScreen(title: title, leagueId: leagueId);
+                Navigator.push(context, platformPageRoute(builder: (context) => compScreen,));
+              },
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                Text('$name', style: TextStyle(fontSize: 18.0)),
-              ])
-            );
-          },
-        )
+                    Text('$name', style: TextStyle(fontSize: 18.0)),
+                  ])
+          );
+        },
       );
     }
+
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
+        title: Text("Leagues"),
+      ),
+      body: body
+    );
   }
 }
