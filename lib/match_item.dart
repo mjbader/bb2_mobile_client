@@ -16,22 +16,32 @@ class MatchItem extends StatelessWidget {
     var homeScore = matchElement.findElements("HomeScore").first.text;
     var homeTeamId = matchElement.findElements("IdTeamHome").first.firstChild.text;
     var homeTeam = participants[homeTeamId];
-    var homeTeamName;
-    if (homeTeam == null) {
-      homeTeamName = "Loading...";
-    } else {
-      homeTeamName = participants[homeTeamId].findAllElements("Name").first.text;
+    var homeTeamName = "Loading...";
+    var homeCoachName = "Loading...";
+    if (homeTeam != null) {
+      homeTeamName = homeTeam.findAllElements("Name").first.text;
+      if (homeTeam.findElements("NameCoach").isNotEmpty) {
+        homeCoachName = homeTeam.findElements("NameCoach").first.text;
+      } else {
+        homeCoachName = "AI";
+      }
     }
 
     var awayScore = matchElement.findElements("AwayScore").first.text;
     var awayTeamId = matchElement.findElements("IdTeamAway").first.firstChild.text;
     var awayTeam = participants[awayTeamId];
-    var awayTeamName;
-    if (awayTeam == null) {
-      awayTeamName = "Loading...";
-    } else {
-      awayTeamName = participants[awayTeamId].findAllElements("Name").first.text;
+    var awayTeamName = "Loading...";
+    var awayCoachName = "Loading...";
+    if (awayTeam != null) {
+      awayTeamName = awayTeam.findAllElements("Name").first.text;
+      if (awayTeam.findElements("NameCoach").isNotEmpty) {
+        awayCoachName = awayTeam.findElements("NameCoach").first.text;
+      } else {
+        awayCoachName = "AI";
+      }
     }
+
+
 
     if (status == MatchStatus.unplayed) {
       homeScore = '?';
@@ -41,7 +51,9 @@ class MatchItem extends StatelessWidget {
     var scoreColumn = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('', style: TextStyle(fontSize: 7.0, fontWeight: FontWeight.bold)),
           Text('$homeScore', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+          Text('', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
           Text('$awayScore', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
         ]);
 
@@ -49,7 +61,9 @@ class MatchItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('$homeTeamName', style: TextStyle(fontSize: 16.0)),
+          Text('  $homeCoachName', style: TextStyle(fontSize: 14.0)),
           Text('$awayTeamName', style: TextStyle(fontSize: 16.0)),
+          Text('  $awayCoachName', style: TextStyle(fontSize: 14.0)),
         ]);
 
     var child = Padding(

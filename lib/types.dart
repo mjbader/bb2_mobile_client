@@ -19,3 +19,12 @@ class MatchStatus {
   static const int unvalidated = 1;
   static const int validated = 2;
 }
+
+enum AdminedType {
+  concede,
+  normal
+}
+
+enum WinType {
+  home, away, tie
+}

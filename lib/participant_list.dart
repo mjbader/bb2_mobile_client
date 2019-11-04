@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:xml/xml.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
@@ -6,10 +7,11 @@ import 'package:bb2_mobile_app/participant_item.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class ParticipantList extends StatefulWidget {
-  ParticipantList({Key key, this.compId, this.participants, this.maxTeams}) : super(key: key);
+  ParticipantList({Key key, this.compId, this.participants, this.maxTeams, this.onKick}) : super(key: key);
   final List<XmlElement> participants;
   final String compId;
   final int maxTeams;
+  final Function onKick;
 
   @override
   _ParticipantListState createState() => _ParticipantListState();
@@ -31,6 +33,39 @@ class _ParticipantListState extends State<ParticipantList> {
     });
   }
 
+  void removeParticipant(XmlElement participant) {
+    showPlatformDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return PlatformAlertDialog(
+            title: Text('Are you sure remove this participant?'),
+            actions: <Widget>[
+              PlatformDialogAction(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              PlatformDialogAction(
+                child: Text('Yes'),
+                onPressed: () {
+                  var teamId = participant.findElements("RowTeam").first.findElements("ID").first.firstChild.text;
+                  setState(() {
+                    teamsInvited = null;
+                  });
+                  BB2Admin.defaultManager.expelTeamFromComp(widget.compId, teamId).then((value) {
+                    widget.participants.remove(participant);
+                    widget.onKick();
+                    refreshData();
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   SliverStickyHeader createList({String header, List<XmlElement> elements}) {
     return SliverStickyHeader(
         header: new Container(
@@ -48,8 +83,19 @@ class _ParticipantListState extends State<ParticipantList> {
                 SliverChildBuilderDelegate((BuildContext context, int index) {
           return Column(
             children: <Widget>[
-              ParticipantItem(
-                participant: elements[index],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  ParticipantItem(
+                    participant: elements[index],
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.block),
+                    padding: EdgeInsets.only(right: 10),
+                    color: Colors.red,
+                    onPressed: () => removeParticipant(elements[index])
+                  )
+                ],
               ),
               Divider()
             ],

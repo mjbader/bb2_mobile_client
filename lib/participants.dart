@@ -9,12 +9,13 @@ class ParticipantsScreen extends StatelessWidget {
   final String title;
   final String compId;
   final int maxTeams;
+  final Function onKick;
 
-  const ParticipantsScreen({Key key, this.title, this.participants, this.compId, this.maxTeams}) : super(key:key);
+  const ParticipantsScreen({Key key, this.title, this.participants, this.compId, this.maxTeams, this.onKick}) : super(key:key);
 
   @override
   Widget build(BuildContext context) {
-    var body = ParticipantList(compId: compId, participants: participants, maxTeams: maxTeams,);
+    var body = ParticipantList(compId: compId, participants: participants, maxTeams: maxTeams, onKick: this.onKick,);
 
     return PlatformScaffold(
       appBar: PlatformAppBar(

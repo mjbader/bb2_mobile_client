@@ -13,6 +13,7 @@ import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/match_item.dart';
 import 'participant_list.dart';
 import 'match_report.dart';
+import 'admin_match.dart';
 import 'types.dart';
 
 class MatchesScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class MatchesScreen extends StatefulWidget {
   _MatchesScreenState createState() => _MatchesScreenState();
 }
 
-enum _MatchOptions { validate, reset, info }
+enum _MatchOptions { validate, reset, info, admin }
 
 class _MatchesScreenState extends State<MatchesScreen> {
   XmlElement _compData;
@@ -272,6 +273,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
         ];
         break;
       case MatchStatus.unplayed:
+        children += [
+          PlatformActionSheetAction<_MatchOptions>(
+            result: _MatchOptions.admin,
+            widget: Row(
+              mainAxisAlignment: Platform.isIOS
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
+              children: <Widget>[
+                Icon(Icons.build),
+                Text('  Admin Match', style: TextStyle(fontSize: 20))
+              ],
+            ),
+          ),
+        ];
         break;
     }
 
@@ -336,7 +351,27 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       matchId: recordId,
                     )));
         break;
+      case _MatchOptions.admin:
+        var homeTeamId = match.matchElement.findElements("IdTeamHome").first.firstChild.text;
+        var awayTeamId = match.matchElement.findElements("IdTeamAway").first.firstChild.text;
+        Navigator.push(
+            context,
+            platformPageRoute(
+                builder: (context) => AdminMatchScreen(
+                  matchId: matchId,
+                  compId: widget.compId,
+                  participants: [_participants[homeTeamId], _participants[awayTeamId]],
+                  onComplete: this.onMatchAdminned,
+                )));
+        break;
     }
+  }
+
+  void onMatchAdminned() {
+    setState(() {
+      _matches = null;
+    });
+    refreshData();
   }
 
   void setData(XmlElement compData) {
@@ -417,7 +452,15 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   participants: inComp.toList(),
                   compId: widget.compId,
                   maxTeams: _maxTeams,
+                  onKick: this.refreshData,
                 )));
+  }
+  
+  void addAI() {
+    var leagueId = _compData.findElements("RowLeague").first.findElements("Id").first.firstChild.text;
+    BB2Admin.defaultManager.addAIToComp(widget.compId, leagueId).then((value) {
+      refreshData();
+    });
   }
 
   @override
@@ -470,7 +513,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
             child: ParticipantList(
                 compId: widget.compId,
                 participants: _participants.values.toList(),
-                maxTeams: _maxTeams))
+                maxTeams: _maxTeams,
+                onKick: this.refreshData,
+            ))
       ];
 
       body = Column(
@@ -492,9 +537,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               MatchItem(matchElement: matchData, participants: _participants);
           var status = int.parse(matchData.findElements("IdStatus").first.text);
           var id = matchData.findElements("Id").first.firstChild.text;
-//          if (status != MatchStatus.validated) {
           onPressed = () => _matchSelected(status, context, matchItem, id);
-//          }
 
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -503,6 +546,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 FlatButton(
                   child: matchItem,
                   onPressed: onPressed,
+                    textColor: status == 2 ? Colors.grey : null
                 ),
               ]);
         },
@@ -551,6 +595,15 @@ class _MatchesScreenState extends State<MatchesScreen> {
     }
 
     List<Widget> actions = List<Widget>();
+
+    if (_compStatus == 0 && !isReadyToStart()) {
+      actions += [
+        PlatformIconButton(
+          icon: Icon(Icons.plus_one),
+          onPressed: addAI,
+        )
+      ];
+    }
 
     if (_compStatus == 1) {
       actions += [

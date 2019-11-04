@@ -92,10 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginPressed() async {
-    if (!_whiteList.contains(_username.toLowerCase())) {
-      showError("User has no rebbl access");
-      return;
-    }
+//    if (!_whiteList.contains(_username.toLowerCase())) {
+//      showError("User has no rebbl access");
+//      return;
+//    }
 
     setState(() {
       _isLoading = true;
@@ -154,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 100.0,
                       height: 100.0,
                     ),
-                    Text("Admin Client Alpha",
+                    Text("Admin Client",
                       style: TextStyle(fontSize: 20),
                     ),
                     CPTextField(
