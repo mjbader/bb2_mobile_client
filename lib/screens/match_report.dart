@@ -6,8 +6,6 @@ import 'dart:collection';
 
 import 'package:xml/xml.dart';
 
-import 'package:bb2_mobile_app/mocks/matchrecord_mock.dart';
-
 class MatchReport extends StatefulWidget {
   final String matchId;
 
@@ -21,10 +19,6 @@ class _TeamInfo {
   String teamName;
   String coachName;
   int score;
-}
-
-enum _MatchState {
-  normal, homeConcede, awayConcede
 }
 
 class _MatchReportState extends State<MatchReport> {

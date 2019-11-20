@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
-import 'package:bb2_mobile_app/competitions.dart';
+import 'package:bb2_mobile_app/screens/competitions.dart';
 import 'package:xml/xml.dart';
 
 class LeagueScreen extends StatefulWidget {

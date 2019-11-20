@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
-import 'types.dart';
+import 'package:bb2_mobile_app/types.dart';
 
 class MatchItem extends StatelessWidget {
   final XmlElement matchElement;

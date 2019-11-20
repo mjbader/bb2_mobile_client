@@ -3,7 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:xml/xml.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
-import 'package:bb2_mobile_app/participant_item.dart';
+import 'package:bb2_mobile_app/common_widgets/participant_item.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class ParticipantList extends StatefulWidget {

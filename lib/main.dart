@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bb2_mobile_app/loading.dart';
+import 'package:bb2_mobile_app/screens/loading.dart';
 
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     return PlatformApp(
         title: 'ReBBL Admin App',
         home: LoadingScreen(),
+        debugShowCheckedModeBanner: false,
         android: (_) => MaterialAppData(
               theme: ThemeData(
                 primarySwatch: Colors.red,

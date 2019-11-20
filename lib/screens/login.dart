@@ -3,10 +3,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'dart:io';
 
-import 'cross_platform_widgets/cptextfield.dart';
+import 'package:bb2_mobile_app/cross_platform_widgets/cptextfield.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
-import 'package:bb2_mobile_app/leagues.dart';
+import 'package:bb2_mobile_app/screens/leagues.dart';
 import 'package:flutter_keychain/flutter_keychain.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,54 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _rememberMe = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  final _whiteList = [
-    'rebbl',
-    'fullmetalcos',
-    'miraskadu',
-    'luminous',
-    'bleedinghippy',
-    'isenmike',
-    'kejiruze',
-    'majorbyte',
-    'rumblebee',
-    'schlice',
-    'munkey chunks',
-    'morka',
-    'cakengrad',
-    'superfedtv',
-    'spicasaurus',
-    'gerbear',
-    'tomast',
-    'mmcnaughton4',
-    'mystaes',
-    'holes',
-    'kallisti maya',
-    'hindi',
-    'archxl',
-    'zeazetta',
-    'gypsy prince',
-    'chubstep_',
-    'he roto su cara',
-    'one30',
-    '#420nochin',
-    'shadorra',
-    'docmarc',
-    'hummersepp',
-    'rusty seabutter',
-    'tommo',
-    'krusader',
-    'liamcoulston',
-    'lyskaris',
-    'hindi',
-    'lumibot',
-    'lumiboto',
-    'larkstar',
-    'meshuggah',
-    'seanmantv',
-    'steakmittens',
-    'harringzord'
-  ];
 
   void showError(String error) {
     if (Platform.isAndroid) {

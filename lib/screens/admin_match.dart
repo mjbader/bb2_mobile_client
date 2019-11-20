@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'number_textfield_buttons.dart';
+import 'package:bb2_mobile_app/common_widgets//number_textfield_buttons.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
 

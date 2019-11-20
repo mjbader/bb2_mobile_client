@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
-import 'package:bb2_mobile_app/leagues.dart';
-import 'package:bb2_mobile_app/login.dart';
+import 'package:bb2_mobile_app/screens/leagues.dart';
+import 'package:bb2_mobile_app/screens/login.dart';
 import 'package:flutter_keychain/flutter_keychain.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

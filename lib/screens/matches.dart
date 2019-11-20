@@ -1,25 +1,26 @@
 import 'dart:collection';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-import 'cross_platform_widgets/cpactionsheet.dart';
+import 'package:bb2_mobile_app/cross_platform_widgets/cpactionsheet.dart';
 import 'dart:io';
 
-import 'package:bb2_mobile_app/participants.dart';
+import 'package:bb2_mobile_app/screens/participants.dart';
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
 
-import 'package:bb2_mobile_app/match_item.dart';
-import 'participant_list.dart';
-import 'match_report.dart';
-import 'admin_match.dart';
-import 'types.dart';
+import 'package:bb2_mobile_app/common_widgets/match_item.dart';
+import 'package:bb2_mobile_app/common_widgets/participant_list.dart';
+import 'package:bb2_mobile_app/screens/match_report.dart';
+import 'package:bb2_mobile_app/screens/admin_match.dart';
+import 'package:bb2_mobile_app/types.dart';
 
 class MatchesScreen extends StatefulWidget {
-  MatchesScreen({Key key, this.title, this.compId}) : super(key: key);
+  MatchesScreen({Key key, this.title, this.compId, this.compChanged}) : super(key: key);
   final String title;
   final String compId;
+  final Function compChanged;
 
   @override
   _MatchesScreenState createState() => _MatchesScreenState();
@@ -135,7 +136,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   BB2Admin.defaultManager
                       .advanceCompetition(compId)
                       .then((element) {
-                    setData(element);
+                    updateData(compData: element);
                   });
                   Navigator.of(context).pop();
                 },
@@ -175,7 +176,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   BB2Admin.defaultManager
                       .startCompetition(compId)
                       .then((element) {
-                    refreshData();
+                    updateData();
                   });
                   Navigator.of(context).pop();
                 },
@@ -201,7 +202,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     BB2Admin.defaultManager
         .validateMatch(matchId, compId)
-        .then((data) => setData(data));
+        .then((data) => updateData(compData: data));
   }
 
   void _resetMatch(String matchId) {
@@ -220,7 +221,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     BB2Admin.defaultManager
         .resetMatch(matchId, compId)
-        .then((data) => setData(data));
+        .then((data) => updateData(compData: data));
   }
 
   void _matchSelected(
@@ -371,7 +372,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     setState(() {
       _matches = null;
     });
-    refreshData();
+    updateData();
   }
 
   void setData(XmlElement compData) {
@@ -427,6 +428,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
     });
   }
 
+  void updateData({XmlElement compData}) {
+    widget.compChanged();
+
+    if (compData != null) {
+      setData(compData);
+    } else {
+      refreshData();
+    }
+  }
+
   void refreshData() {
     setState(() {
       _matches = null;
@@ -452,14 +463,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   participants: inComp.toList(),
                   compId: widget.compId,
                   maxTeams: _maxTeams,
-                  onKick: this.refreshData,
+                  onKick: () => this.updateData(),
                 )));
   }
   
   void addAI() {
     var leagueId = _compData.findElements("RowLeague").first.findElements("Id").first.firstChild.text;
     BB2Admin.defaultManager.addAIToComp(widget.compId, leagueId).then((value) {
-      refreshData();
+      updateData();
     });
   }
 
@@ -514,7 +525,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 compId: widget.compId,
                 participants: _participants.values.toList(),
                 maxTeams: _maxTeams,
-                onKick: this.refreshData,
+                onKick: () => this.updateData(),
             ))
       ];
 
@@ -572,7 +583,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       ];
 
       if (_requestSending) {
-        children += [CircularProgressIndicator()];
+        children += [PlatformCircularProgressIndicator()];
       } else if (_currentRound == _selectedRound &&
           _compStatus != CompetitionStatus.completed) {
         Function onPressed = isReadyToAdvance() ? advanceRound : null;

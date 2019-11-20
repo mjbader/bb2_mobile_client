@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:xml/xml.dart';
-import 'participant_list.dart';
+import 'package:bb2_mobile_app/common_widgets/participant_list.dart';
 
 class ParticipantsScreen extends StatelessWidget {
   final List<XmlElement> participants;
