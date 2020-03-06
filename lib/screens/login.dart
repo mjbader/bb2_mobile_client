@@ -7,7 +7,7 @@ import 'package:bb2_mobile_app/cross_platform_widgets/cptextfield.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/screens/leagues.dart';
-import 'package:flutter_keychain/flutter_keychain.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -54,8 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     BB2Admin.defaultManager.connect(_username,_password).then((result) {
       if (_rememberMe) {
-        FlutterKeychain.put(key: "bb2username", value: _username);
-        FlutterKeychain.put(key: "bb2password", value: _password);
+        final storage = new FlutterSecureStorage();
+        storage.write(key: "bb2username", value: _username);
+        storage.write(key: "bb2password", value: _password);
         SharedPreferences.getInstance().then((prefs) => prefs.setBool("autologin", true));
       }
 

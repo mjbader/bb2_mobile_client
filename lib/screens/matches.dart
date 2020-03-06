@@ -348,6 +348,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         Navigator.push(
             context,
             platformPageRoute(
+                context: context,
                 builder: (context) => MatchReport(
                       matchId: recordId,
                     )));
@@ -358,6 +359,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         Navigator.push(
             context,
             platformPageRoute(
+                context: context,
                 builder: (context) => AdminMatchScreen(
                   matchId: matchId,
                   compId: widget.compId,
@@ -458,6 +460,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     Navigator.push(
         context,
         platformPageRoute(
+            context: context,
             builder: (context) => ParticipantsScreen(
                   title: "${widget.title} - Participants",
                   participants: inComp.toList(),

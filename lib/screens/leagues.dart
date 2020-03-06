@@ -54,7 +54,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
               onPressed: () {
                 var title = name;
                 var compScreen = CompetitionsScreen(title: title, leagueId: leagueId);
-                Navigator.push(context, platformPageRoute(builder: (context) => compScreen,));
+                Navigator.push(context, platformPageRoute(context: context, builder: (context) => compScreen,));
               },
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

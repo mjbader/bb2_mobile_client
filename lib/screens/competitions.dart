@@ -54,8 +54,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   }
 
   void pushAddCompetitionScreen() {
-    Navigator.push(context,
-        platformPageRoute(builder: (context) => AddCompetition()));
+    Navigator.push(
+        context,
+        platformPageRoute(
+            context: context, builder: (context) => AddCompetition()));
   }
 
   void showDeleteConfirmDialog() {
@@ -242,8 +244,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                     compId: id,
                     compChanged: refreshData,
                   );
-                  Navigator.push(context,
-                      platformPageRoute(builder: (context) => compScreen));
+                  Navigator.push(
+                      context,
+                      platformPageRoute(
+                          context: context, builder: (context) => compScreen));
                 }
               },
               onLongPress: () {
@@ -272,8 +276,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         PlatformIconButton(
           icon: Icon(Icons.edit),
           onPressed: () => setState(() {
-                _editMode = true;
-              }),
+            _editMode = true;
+          }),
         )
     ];
 
@@ -296,9 +300,9 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         leadingAction = CupertinoButton(
           child: PlatformText("Cancel"),
           onPressed: () => setState(() {
-                _editMode = false;
-                _isSelected.clear();
-              }),
+            _editMode = false;
+            _isSelected.clear();
+          }),
           padding: EdgeInsets.all(0),
         );
         trailingActions = [
@@ -324,10 +328,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 
     return PlatformScaffold(
       android: (context) => MaterialScaffoldData(
-              floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: addCompPush,
-          )),
+//          floatingActionButton: FloatingActionButton(
+//        child: Icon(Icons.add),
+//        onPressed: addCompPush,
+      ),
       appBar: PlatformAppBar(
         title: PlatformText(widget.title),
         trailingActions: trailingActions,
