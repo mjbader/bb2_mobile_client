@@ -4,7 +4,6 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:bb2_mobile_app/cross_platform_widgets/cpactionsheet.dart';
 import 'dart:io';
 
-import 'package:bb2_mobile_app/screens/participants.dart';
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
@@ -14,10 +13,12 @@ import 'package:bb2_mobile_app/common_widgets/match_item.dart';
 import 'package:bb2_mobile_app/common_widgets/participant_list.dart';
 import 'package:bb2_mobile_app/screens/match_report.dart';
 import 'package:bb2_mobile_app/screens/admin_match.dart';
+import 'package:bb2_mobile_app/screens/coach_search_delegate.dart';
 import 'package:bb2_mobile_app/types.dart';
 
 class MatchesScreen extends StatefulWidget {
-  MatchesScreen({Key key, this.title, this.compId, this.compChanged}) : super(key: key);
+  MatchesScreen({Key key, this.title, this.compId, this.compChanged})
+      : super(key: key);
   final String title;
   final String compId;
   final Function compChanged;
@@ -33,6 +34,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List<XmlElement> _matches;
   List<XmlElement> _weekMatches;
   HashMap<String, XmlElement> _participants;
+  List<XmlElement> _inComp;
   int _rounds;
   int _currentRound;
   int _selectedRound;
@@ -344,7 +346,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
             });
         break;
       case _MatchOptions.info:
-        var recordId = match.matchElement.findAllElements("IdMatchRecord").first.text;
+        var recordId =
+            match.matchElement.findAllElements("IdMatchRecord").first.text;
         Navigator.push(
             context,
             platformPageRoute(
@@ -354,18 +357,23 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     )));
         break;
       case _MatchOptions.admin:
-        var homeTeamId = match.matchElement.findElements("IdTeamHome").first.firstChild.text;
-        var awayTeamId = match.matchElement.findElements("IdTeamAway").first.firstChild.text;
+        var homeTeamId =
+            match.matchElement.findElements("IdTeamHome").first.firstChild.text;
+        var awayTeamId =
+            match.matchElement.findElements("IdTeamAway").first.firstChild.text;
         Navigator.push(
             context,
             platformPageRoute(
                 context: context,
                 builder: (context) => AdminMatchScreen(
-                  matchId: matchId,
-                  compId: widget.compId,
-                  participants: [_participants[homeTeamId], _participants[awayTeamId]],
-                  onComplete: this.onMatchAdminned,
-                )));
+                      matchId: matchId,
+                      compId: widget.compId,
+                      participants: [
+                        _participants[homeTeamId],
+                        _participants[awayTeamId]
+                      ],
+                      onComplete: this.onMatchAdminned,
+                    )));
         break;
     }
   }
@@ -451,29 +459,65 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void goToParticipants() {
-    var inComp = _participants.values.where((element) {
-      var status =
-          int.parse(element.findElements("IdTeamCompetitionStatus").first.text);
-      return status == 1;
-    });
-
     Navigator.push(
         context,
         platformPageRoute(
             context: context,
-            builder: (context) => ParticipantsScreen(
-                  title: "${widget.title} - Participants",
-                  participants: inComp.toList(),
-                  compId: widget.compId,
-                  maxTeams: _maxTeams,
-                  onKick: () => this.updateData(),
-                )));
+            maintainState: false,
+            builder: (context) {
+              return PlatformScaffold(
+                appBar: PlatformAppBar(
+                  title: Text("${widget.title}"),
+                  trailingActions: [
+                    PlatformIconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: searchForTeam,
+                    )
+                  ],
+                ),
+                body: SafeArea(
+                  child: ParticipantList(
+                    compId: widget.compId,
+                    maxTeams: _maxTeams,
+                    onKick: () => this.updateData(),
+                  ),
+                  bottom: false,
+                ),
+              );
+            }));
   }
-  
+
   void addAI() {
-    var leagueId = _compData.findElements("RowLeague").first.findElements("Id").first.firstChild.text;
+    var leagueId = _compData
+        .findElements("RowLeague")
+        .first
+        .findElements("Id")
+        .first
+        .firstChild
+        .text;
     BB2Admin.defaultManager.addAIToComp(widget.compId, leagueId).then((value) {
       updateData();
+    });
+  }
+
+  void searchForTeam() async {
+    var resultFuture =
+        showSearch(context: context, delegate: CoachSearchDelegate(context));
+    resultFuture.then((result) {
+      var leagueId = _compData
+          .findElements("RowLeague")
+          .first
+          .findElements("Id")
+          .first
+          .firstChild
+          .text;
+      if (result != null) {
+        var ticketSendFuture = BB2Admin.defaultManager.createAndSendTicket(
+            leagueId, widget.compId, result.coachId, result.teamId);
+        ticketSendFuture.then((response) {
+          refreshData();
+        });
+      }
     });
   }
 
@@ -525,11 +569,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
       children += [
         new Expanded(
             child: ParticipantList(
-                compId: widget.compId,
-                participants: _participants.values.toList(),
-                maxTeams: _maxTeams,
-                onKick: () => this.updateData(),
-            ))
+          compId: widget.compId,
+          maxTeams: _maxTeams,
+          onKick: () => this.updateData(),
+        ))
       ];
 
       body = Column(
@@ -558,10 +601,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FlatButton(
-                  child: matchItem,
-                  onPressed: onPressed,
-                    textColor: status == 2 ? Colors.grey : null
-                ),
+                    child: matchItem,
+                    onPressed: onPressed,
+                    textColor: status == 2 ? Colors.grey : null),
               ]);
         },
       );
@@ -610,11 +652,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     List<Widget> actions = List<Widget>();
 
-    if (_compStatus == 0 && !isReadyToStart()) {
+    if (_compStatus == 0 &&
+        !isReadyToStart()) {
+      if (_inComp.length < _maxTeams) {
+        actions += [
+          PlatformIconButton(
+            icon: Icon(Icons.plus_one),
+            onPressed: addAI,
+          ),
+        ];
+      }
       actions += [
         PlatformIconButton(
-          icon: Icon(Icons.plus_one),
-          onPressed: addAI,
+          icon: Icon(Icons.search),
+          onPressed: searchForTeam,
         )
       ];
     }
