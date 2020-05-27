@@ -18,7 +18,11 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.red,
               ),
             ),
-        ios: (_) => CupertinoAppData()
+        ios: (_) => CupertinoAppData(),
+        localizationsDelegates: [
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
     );
   }
 }
