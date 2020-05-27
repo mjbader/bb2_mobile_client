@@ -117,7 +117,8 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
     }
     var add = true;
     for (var i = 0; i < teamSuggestions.length; ++i) {
-      if (query == teamSuggestions[i] && coachController.text == coachSuggestions[i]) {
+      if (query == teamSuggestions[i] &&
+          coachController.text == coachSuggestions[i]) {
         // Remove
         add = false;
         teamSuggestions.removeAt(i);
@@ -137,35 +138,36 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   @override
   List<Widget> buildActions(BuildContext context) {
     List<Widget> actions = [];
-    var starIcon = Icon(Icons.star_border);
+    var starIcon = Icon(Icons.star_border, color: Colors.amber);
     if (teamSuggestions != null &&
         teamSuggestions.contains(query) &&
-        coachSuggestions !=null &&
+        coachSuggestions != null &&
         coachSuggestions.contains(coachController.text)) {
-      starIcon = Icon(Icons.star);
+      starIcon = Icon(Icons.star, color: Colors.amber);
     }
     if (query.length > 1) {
       actions += [
         PlatformIconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            query = "";
-            showSuggestions(context);
-          }
-        ),
+            icon: Icon(Icons.close),
+            onPressed: () {
+              query = "";
+              showSuggestions(context);
+            }),
         if (query.length > 2 || coachController.text.length > 2)
-          PlatformIconButton(
-            icon: starIcon,
-            color: Colors.amber,
+          FlatButton(
+            child: starIcon,
             onPressed: toggleFavoriteQuery,
-          ),
-        if (Platform.isIOS)
-          CupertinoButton(
-            child: Text("Close"),
-            onPressed: () => close(context, null),
           )
       ];
     }
+    if (Platform.isIOS)
+      actions += [
+        CupertinoButton(
+          child: Text("Close"),
+          onPressed: () => close(context, null),
+        )
+      ];
+
     return actions;
   }
 
@@ -177,12 +179,13 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
         children: <Widget>[
           coachSearch,
           Container(color: Theme.of(context).dividerColor, height: 0.5),
-          Expanded(
-              child: SuggestionList(onTapped: (team, coach) {
-                query = team;
-                coachController.text = coach;
-                showResults(context);
-              },))
+          Expanded(child: SuggestionList(
+            onTapped: (team, coach) {
+              query = team;
+              coachController.text = coach;
+              showResults(context);
+            },
+          ))
         ],
       );
 
@@ -191,7 +194,8 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
     Widget body = Scaffold();
     if (query.length > 2 || coachController.text.length > 2) {
       body = FutureBuilder<Iterable<XmlElement>>(
-          future: BB2Admin.defaultManager.searchTeam(query, coachController.text),
+          future:
+              BB2Admin.defaultManager.searchTeam(query, coachController.text),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var listView = ListView.separated(

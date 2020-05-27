@@ -312,18 +312,19 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
             padding: EdgeInsets.all(0),
           )
         ];
-      } else {
-        trailingActions = [
-          PlatformIconButton(
-            icon: Icon(
-              CupertinoIcons.add,
-              size: 40,
-            ),
-            onPressed: addCompPush,
-            padding: EdgeInsets.only(bottom: 10),
-          )
-        ];
       }
+//      } else {
+//        trailingActions = [
+//          PlatformIconButton(
+//            icon: Icon(
+//              CupertinoIcons.add,
+//              size: 40,
+//            ),
+//            onPressed: addCompPush,
+//            padding: EdgeInsets.only(bottom: 10),
+//          )
+//        ];
+//      }
     }
 
     return PlatformScaffold(
@@ -331,7 +332,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 //          floatingActionButton: FloatingActionButton(
 //        child: Icon(Icons.add),
 //        onPressed: addCompPush,
-      ),
+          ),
       appBar: PlatformAppBar(
         title: PlatformText(widget.title),
         trailingActions: trailingActions,
