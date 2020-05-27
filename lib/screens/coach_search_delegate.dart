@@ -138,13 +138,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   @override
   List<Widget> buildActions(BuildContext context) {
     List<Widget> actions = [];
-    var starIcon = Icon(Icons.star_border, color: Colors.amber);
-    if (teamSuggestions != null &&
-        teamSuggestions.contains(query) &&
-        coachSuggestions != null &&
-        coachSuggestions.contains(coachController.text)) {
-      starIcon = Icon(Icons.star, color: Colors.amber);
-    }
+
     if (query.length > 1) {
       actions += [
         PlatformIconButton(
@@ -153,11 +147,6 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
               query = "";
               showSuggestions(context);
             }),
-        if (query.length > 2 || coachController.text.length > 2)
-          FlatButton(
-            child: starIcon,
-            onPressed: toggleFavoriteQuery,
-          )
       ];
     }
     if (Platform.isIOS)
@@ -172,7 +161,24 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   }
 
   @override
-  Widget buildLeading(BuildContext context) => Icon(Icons.search);
+  Widget buildLeading(BuildContext context) {
+    if (query.length > 2 || coachController.text.length > 2) {
+      var starIcon = Icon(Icons.star_border, color: Colors.amber);
+      if (teamSuggestions != null &&
+          teamSuggestions.contains(query) &&
+          coachSuggestions != null &&
+          coachSuggestions.contains(coachController.text)) {
+        starIcon = Icon(Icons.star, color: Colors.amber);
+      }
+      return FlatButton(
+        child: starIcon,
+        onPressed: toggleFavoriteQuery,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      );
+    } else {
+      return Icon(Icons.search);
+    }
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) => Column(
