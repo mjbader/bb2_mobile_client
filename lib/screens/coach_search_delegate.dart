@@ -8,6 +8,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml/xml.dart';
 import 'package:bb2_mobile_app/common_widgets/suggestions_list.dart';
+import 'package:bb2_mobile_app/themes/themes.dart';
+
 
 class CoachAndTeam {
   CoachAndTeam(this.coachId, this.teamId);
@@ -25,13 +27,11 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   var suggestions = ["[ADMIN]"];
 
   ThemeData appBarTheme(BuildContext context) {
-    assert(context != null);
     final ThemeData theme = Theme.of(context);
-    assert(theme != null);
     return theme.copyWith(
-      primaryColor: Colors.white,
+      primaryColor: AppTheme.getBackgroundColor(),
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
-      primaryColorBrightness: Brightness.light,
+      primaryColorBrightness: Brightness.dark,
       primaryTextTheme: theme.textTheme,
     );
   }
@@ -181,23 +181,24 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) => Column(
-        children: <Widget>[
-          coachSearch,
-          Container(color: Theme.of(context).dividerColor, height: 0.5),
-          Expanded(child: SuggestionList(
-            onTapped: (team, coach) {
-              query = team;
-              coachController.text = coach;
-              showResults(context);
-            },
-          ))
-        ],
-      );
+  Widget buildSuggestions(BuildContext context) => Container(color: AppTheme.getBackgroundColor(),
+      child: Column(
+    children: <Widget>[
+      coachSearch,
+      Container(color: Theme.of(context).dividerColor, height: 0.5),
+      Expanded(child: SuggestionList(
+        onTapped: (team, coach) {
+          query = team;
+          coachController.text = coach;
+          showResults(context);
+        },
+      ))
+    ],
+  ));
 
   @override
   Widget buildResults(BuildContext context) {
-    Widget body = Scaffold();
+    Widget body = Scaffold(backgroundColor: AppTheme.getBackgroundColor(),);
     if (query.length > 2 || coachController.text.length > 2) {
       body = FutureBuilder<Iterable<XmlElement>>(
           future:
@@ -245,12 +246,12 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
             return Scaffold();
           });
     }
-    return Column(
+    return Container(color: AppTheme.getBackgroundColor(), child: Column(
       children: <Widget>[
         coachSearch,
         Container(color: Theme.of(context).dividerColor, height: 0.5),
         Expanded(child: body)
       ],
-    );
+    ));
   }
 }

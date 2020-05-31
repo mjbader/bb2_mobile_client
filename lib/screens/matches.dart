@@ -15,6 +15,8 @@ import 'package:bb2_mobile_app/screens/match_report.dart';
 import 'package:bb2_mobile_app/screens/admin_match.dart';
 import 'package:bb2_mobile_app/screens/coach_search_delegate.dart';
 import 'package:bb2_mobile_app/types.dart';
+import 'package:bb2_mobile_app/themes/themes.dart';
+
 
 class MatchesScreen extends StatefulWidget {
   MatchesScreen({Key key, this.title, this.compId, this.compChanged})
@@ -531,6 +533,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
           children: <Widget>[
             Text(
               'Getting Matches...',
+              style: Theme.of(context).textTheme.headline6
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -603,7 +606,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 FlatButton(
                     child: matchItem,
                     onPressed: onPressed,
-                    textColor: status == 2 ? Colors.grey : null),
+                    textColor: status == 2 ? Colors.grey : AppTheme.getTextColor()),
               ]);
         },
       );
