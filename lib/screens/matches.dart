@@ -34,7 +34,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List<XmlElement> _matches;
   List<XmlElement> _weekMatches;
   HashMap<String, XmlElement> _participants;
-  List<XmlElement> _inComp;
+  List<XmlElement> _inComp = [];
   int _rounds;
   int _currentRound;
   int _selectedRound;
