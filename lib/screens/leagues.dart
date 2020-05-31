@@ -34,7 +34,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Getting Leagues...',
+              'Getting Leagues...', style: Theme.of(context).textTheme.headline6
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -45,7 +45,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
       );
     } else {
       body = ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Divider(height: 4,),
+        separatorBuilder: (BuildContext context, int index) => Container(color: Theme.of(context).dividerColor, height: 0.5),
         itemCount: _leagues.length,
         itemBuilder: (BuildContext context, int index) {
           var name = _leagues[index].findAllElements("Name").first.text;
@@ -60,7 +60,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('$name', style: TextStyle(fontSize: 18.0)),
+                    Text('$name', style: Theme.of(context).textTheme.headline6),
                   ])
           );
         },

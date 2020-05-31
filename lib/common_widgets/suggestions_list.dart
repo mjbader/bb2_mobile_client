@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bb2_mobile_app/themes/themes.dart';
+
 
 class SuggestionList extends StatefulWidget {
   SuggestionList({Key key, this.onTapped})
@@ -41,9 +43,9 @@ class _SuggestionListState extends State<SuggestionList> {
           var team = suggestions[index][0];
           var coach = suggestions[index][1];
           return new ListTile(
-            title: Text(team),
+            title: Text(team, style: Theme.of(context).textTheme.subtitle1),
             leading: Icon(Icons.star, color: Colors.amber),
-            subtitle: Text(coach),
+            subtitle: Text(coach, style: Theme.of(context).textTheme.subtitle2),
             onTap: () {
               widget.onTapped(team, coach);
               pullSuggestions();

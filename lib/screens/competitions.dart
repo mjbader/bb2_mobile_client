@@ -124,6 +124,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
           children: <Widget>[
             Text(
               'Getting Competitions...',
+                style: Theme.of(context).textTheme.headline6
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -206,11 +207,11 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('$name', style: TextStyle(fontSize: 18.0)),
+                Text('$name', style: Theme.of(context).textTheme.headline6),
                 Text('$compTypeText',
-                    style: TextStyle(fontSize: 16.0, color: Colors.black87)),
+                    style: Theme.of(context).textTheme.subtitle1),
                 Text('$statusText',
-                    style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                    style: Theme.of(context).textTheme.subtitle2),
               ]);
 
           element = ListItem(

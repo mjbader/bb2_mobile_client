@@ -5,6 +5,7 @@ import 'package:xml/xml.dart';
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/common_widgets/participant_item.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:bb2_mobile_app/themes/themes.dart';
 
 class ParticipantList extends StatefulWidget {
   ParticipantList(
@@ -192,7 +193,7 @@ class _ParticipantListState extends State<ParticipantList> {
     return SliverStickyHeader(
         header: new Container(
           height: 40.0,
-          color: Colors.red,
+          color: Theme.of(context).primaryColor,
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           alignment: Alignment.centerLeft,
           child: new Text(
@@ -247,10 +248,11 @@ class _ParticipantListState extends State<ParticipantList> {
           children: <Widget>[
             Text(
               'Getting Participants...',
+                style: Theme.of(context).textTheme.headline6
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: CircularProgressIndicator(),
+              child: PlatformCircularProgressIndicator(),
             ),
           ],
         ),
@@ -300,6 +302,7 @@ class _ParticipantListState extends State<ParticipantList> {
     }
 
     return Scaffold(
+      backgroundColor: AppTheme.getBackgroundColor(),
       body: body,
     );
   }
