@@ -66,7 +66,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      backgroundColor: Colors.white,
       body: Center(
           child: PlatformCircularProgressIndicator()
       )
