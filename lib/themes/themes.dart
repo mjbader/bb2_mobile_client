@@ -44,7 +44,6 @@ class AppTheme {
 //        dividerColor: Colors.white10,
         inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
       scaffoldBackgroundColor: getBackgroundColor(),
-        primaryColor: getLightThemeData(context).primaryColor.withAlpha(190),
         textTheme: TextTheme(
             headline6: TextStyle(
                 fontSize: 18.0,
@@ -67,6 +66,10 @@ class AppTheme {
         ),
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
           colorScheme: ColorScheme.dark(), buttonColor: Color(0xff3B3B3B)),
+      appBarTheme: AppBarTheme(
+        elevation: 0.0,
+        color: Color(0xFF1A1A1A)
+      ),
     );
   }
 
