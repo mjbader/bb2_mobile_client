@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:bb2_mobile_app/themes/themes.dart';
+
 
 Future<T> showPlatformActionSheet<T>(
     {@required BuildContext context,
@@ -30,7 +32,7 @@ Future<T> showPlatformActionSheet<T>(
     return showDialog<T>(
         context: context,
         builder: (BuildContext context) {
-          return SimpleDialog(title: Text(title), children: actions);
+          return SimpleDialog(title: Text(title), children: actions, backgroundColor: AppTheme.getAlertBackgroundcolor(),);
         });
   }
 

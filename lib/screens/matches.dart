@@ -16,6 +16,7 @@ import 'package:bb2_mobile_app/screens/admin_match.dart';
 import 'package:bb2_mobile_app/screens/coach_search_delegate.dart';
 import 'package:bb2_mobile_app/types.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
+import 'package:bb2_mobile_app/common_widgets/app_alert_dialog.dart';
 
 
 class MatchesScreen extends StatefulWidget {
@@ -107,7 +108,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     showPlatformDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AppAlertDialog(
             title: Text('Are you sure you want to advance the round?'),
             content: SingleChildScrollView(
               child: ListBody(
@@ -154,7 +155,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     showPlatformDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AppAlertDialog(
             title: Text('Are you sure you want to start the round?'),
             actions: <Widget>[
               PlatformDialogAction(
@@ -241,7 +242,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.check),
+                Icon(Icons.check, color: AppTheme.getTextColor()),
                 Text('  Validate', style: TextStyle(fontSize: 20))
               ],
             ),
@@ -253,7 +254,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.cancel),
+                Icon(Icons.cancel, color: AppTheme.getTextColor()),
                 Text('  Reset', style: TextStyle(fontSize: 20))
               ],
             ),
@@ -270,7 +271,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.info),
+                Icon(Icons.info, color: AppTheme.getTextColor()),
                 Text('  Info', style: TextStyle(fontSize: 20))
               ],
             ),
@@ -286,7 +287,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.build),
+                Icon(Icons.build, color: AppTheme.getTextColor(),),
                 Text('  Admin Match', style: TextStyle(fontSize: 20))
               ],
             ),
@@ -301,7 +302,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         showPlatformDialog(
             context: context,
             builder: (BuildContext context) {
-              return PlatformAlertDialog(
+              return AppAlertDialog(
                 title: Text("Are you sure wish to validate this match?"),
                 content: SingleChildScrollView(child: match),
                 actions: <Widget>[
@@ -326,7 +327,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         showPlatformDialog(
             context: context,
             builder: (BuildContext context) {
-              return PlatformAlertDialog(
+              return AppAlertDialog(
                 title: Text("Are you sure wish to reset this match?"),
                 content: SingleChildScrollView(child: match),
                 actions: <Widget>[

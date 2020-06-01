@@ -13,14 +13,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
   return Theme(
-        data: AppTheme.getThemeData(),
+        data: AppTheme.getThemeData(context),
         child: PlatformApp(
           title: 'ReBBL Admin App',
           home: LoadingScreen(),
           debugShowCheckedModeBanner: false,
           android: (_) => MaterialAppData(
-            theme: AppTheme.getThemeData(),
-              darkTheme: AppTheme.getDarkThemeData()
+            theme: AppTheme.getLightThemeData(context),
+              darkTheme: AppTheme.getDarkThemeData(context),
           ),
           ios: (_) => CupertinoAppData(theme: AppTheme.getCupertinoThemeData()),
           localizationsDelegates: [

@@ -25,11 +25,13 @@ class _SuggestionListState extends State<SuggestionList> {
 
   void pullSuggestions() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var teamMames = prefs.getStringList("search_team_query_suggestions");
+    var teamNames = prefs.getStringList("search_team_query_suggestions");
     var coachNames = prefs.getStringList("search_coach_query_suggestions");
     suggestions = [];
-    for (var i = 0; i < teamMames.length; ++i) {
-      suggestions += [[teamMames[i], coachNames[i]]];
+    if (teamNames != null) {
+      for (var i = 0; i < teamNames.length; ++i) {
+        suggestions += [[teamNames[i], coachNames[i]]];
+      }
     }
   }
 
