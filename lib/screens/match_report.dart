@@ -5,7 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'dart:collection';
 
 import 'package:xml/xml.dart';
-
+ 
 class MatchReport extends StatefulWidget {
   final String matchId;
 
