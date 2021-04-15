@@ -329,7 +329,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     }
 
     return PlatformScaffold(
-      android: (context) => MaterialScaffoldData(
+      material: (context, platformTarget) => MaterialScaffoldData(
 //          floatingActionButton: FloatingActionButton(
 //        child: Icon(Icons.add),
 //        onPressed: addCompPush,

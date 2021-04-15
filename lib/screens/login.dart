@@ -4,11 +4,13 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'dart:io';
 
 import 'package:bb2_mobile_app/cross_platform_widgets/cptextfield.dart';
+import 'package:bb2_mobile_app/themes/themes.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/screens/leagues.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -88,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return PlatformScaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: AppTheme.getLoginBackgroundColor(),
       widgetKey: _scaffoldKey,
       body: Center(
           child: Padding(
@@ -97,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.white,
+                color: AppTheme.getLoginForegroundColor(),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,

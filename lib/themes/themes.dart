@@ -40,6 +40,7 @@ class AppTheme {
 
   static ThemeData getDarkThemeData(BuildContext context) {
     return getLightThemeData(context).copyWith(
+      unselectedWidgetColor: Colors.white,
       brightness: Brightness.dark,
 //        dividerColor: Colors.white10,
         inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
@@ -78,6 +79,20 @@ class AppTheme {
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? Colors.white : Colors.black;
+  }
+
+  static Color getLoginBackgroundColor() {
+    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    bool isDark = brightness == Brightness.dark;
+
+    return isDark ? Color(0xFF121212) : Colors.red;
+  }
+
+  static Color getLoginForegroundColor() {
+    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    bool isDark = brightness == Brightness.dark;
+
+    return isDark ? Colors.white24 : Colors.white;
   }
 
   static Color getBackgroundColor() {

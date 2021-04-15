@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
           title: 'ReBBL Admin App',
           home: LoadingScreen(),
           debugShowCheckedModeBanner: false,
-          android: (_) => MaterialAppData(
+          material: (_, platformTarget) => MaterialAppData(
             theme: AppTheme.getLightThemeData(context),
               darkTheme: AppTheme.getDarkThemeData(context),
           ),
-          ios: (_) => CupertinoAppData(theme: AppTheme.getCupertinoThemeData()),
+          cupertino: (_, platformTarget) => CupertinoAppData(theme: AppTheme.getCupertinoThemeData()),
           localizationsDelegates: [
             DefaultMaterialLocalizations.delegate,
             DefaultWidgetsLocalizations.delegate,

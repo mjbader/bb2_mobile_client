@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
+import 'package:bb2_mobile_app/themes/themes.dart';
+
 class NumberPicker extends StatefulWidget {
   const NumberPicker({Key key,
     this.onChanged,
@@ -28,9 +30,9 @@ class _NumberPickerState extends State<NumberPicker> {
   @override
   Widget build(BuildContext context) {
     Function minusFunc;
-    Color minusColor;
+    Color minusColor = AppTheme.getTextColor();;
     Function plusFunc;
-    Color plusColor;
+    Color plusColor = AppTheme.getTextColor();
     if (widget.value > widget.min) {
       minusFunc = () => valueChanged(widget.value - 1);
     } else {

@@ -20,14 +20,14 @@ class AppAlertDialog extends PlatformAlertDialog {
         Widget content,
         Widget title,
         PlatformBuilder<MaterialAlertDialogData> android,
-        PlatformBuilder<CupertinoAlertDialogData> ios})
+        PlatformBuilder<CupertinoAlertDialogData> cupertino})
       : super(key: key,
       widgetKey: widgetKey,
       actions: actions,
       content: content,
       title: title,
-      ios: ios,
-    android: (context) => MaterialAlertDialogData(
+      cupertino: cupertino,
+    material: (context, platformTarget) => MaterialAlertDialogData(
       backgroundColor: AppTheme.getAlertBackgroundcolor(),
     ),);
 }

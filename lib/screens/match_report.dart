@@ -40,6 +40,7 @@ class _MatchReportState extends State<MatchReport> {
 //    'Value',
     'OccupationOwn',
     'OccupationTheir',
+    'WinningsDice'
 //    'MVP'
   ];
   static const _teamTypes = ['Home', 'Away'];
