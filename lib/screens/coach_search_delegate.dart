@@ -216,7 +216,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         participantView,
-                        IconButton(
+                        PlatformIconButton(
                             icon: Icon(Icons.mail),
                             padding: EdgeInsets.only(right: 10),
                             color: Colors.red,

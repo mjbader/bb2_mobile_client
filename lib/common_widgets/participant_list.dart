@@ -205,7 +205,7 @@ class _ParticipantListState extends State<ParticipantList> {
             delegate:
                 SliverChildBuilderDelegate((BuildContext context, int index) {
           List<Widget> actions = [
-            IconButton(
+            PlatformIconButton(
                 icon: Icon(Icons.delete),
                 padding: EdgeInsets.only(right: 10),
                 color: Colors.red,
@@ -213,7 +213,7 @@ class _ParticipantListState extends State<ParticipantList> {
           ];
           var nameElements = elements[index].findAllElements("RowTeam").first.findElements("Name");
           if (forceAccept != null && nameElements.isNotEmpty && nameElements.first.text.toLowerCase().contains("[admin]")) {
-            actions += [IconButton(
+            actions += [PlatformIconButton(
                 icon: Icon(Icons.check),
                 padding: EdgeInsets.only(right: 10),
                 color: Colors.red,
