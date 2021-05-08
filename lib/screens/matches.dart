@@ -618,11 +618,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconButton(
+            PlatformIconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: _selectedRound > 1 ? decrementCurrentRound : null),
             Text('Week $_selectedRound', style: TextStyle(fontSize: 20.0)),
-            IconButton(
+            PlatformIconButton(
               icon: Icon(Icons.arrow_forward),
               onPressed:
                   _selectedRound < _rounds ? incrementCurrentRound : null,
