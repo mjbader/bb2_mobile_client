@@ -30,7 +30,7 @@ class _NumberPickerState extends State<NumberPicker> {
   @override
   Widget build(BuildContext context) {
     Function minusFunc;
-    Color minusColor = AppTheme.getTextColor();;
+    Color minusColor = AppTheme.getTextColor();
     Function plusFunc;
     Color plusColor = AppTheme.getTextColor();
     if (widget.value > widget.min) {

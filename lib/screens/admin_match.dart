@@ -72,7 +72,7 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
     ]);
   }
 
-  Widget TeamSide(_TeamType teamType) {
+  Widget teamSide(_TeamType teamType) {
     int index = 0;
     if (teamType == _TeamType.away) {
       index = 1;
@@ -164,8 +164,8 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TeamSide(_TeamType.home),
-                TeamSide(_TeamType.away)
+                teamSide(_TeamType.home),
+                teamSide(_TeamType.away)
               ]),
           if (homeScore != awayScore)
             Row(

@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bb2_mobile_app/themes/themes.dart';
-
 
 class SuggestionList extends StatefulWidget {
   SuggestionList({Key key, this.onTapped})

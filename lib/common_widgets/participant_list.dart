@@ -33,7 +33,7 @@ class _ParticipantListState extends State<ParticipantList> {
     BB2Admin.defaultManager.getSentTickets(widget.compId).then((tickets) {
       BB2Admin.defaultManager.getCompetitionData(widget.compId).then((element) {
         setState(() {
-          participants = new List<XmlElement>();
+          participants = [];
           participants = element.findAllElements("CompetitionParticipant").fold(participants,
                   (players, element) {
                 var status = int.parse(element.findElements("IdTeamCompetitionStatus").first.text);
@@ -212,7 +212,7 @@ class _ParticipantListState extends State<ParticipantList> {
                 onPressed: () => deleteFunction(elements[index]))
           ];
           var nameElements = elements[index].findAllElements("RowTeam").first.findElements("Name");
-          if (forceAccept != null && nameElements.isNotEmpty && nameElements.first.text.toLowerCase().contains("[admin]")) {
+          if (forceAccept != null && nameElements.isNotEmpty) {
             actions += [IconButton(
                 icon: Icon(Icons.check),
                 padding: EdgeInsets.only(right: 10),
@@ -258,7 +258,7 @@ class _ParticipantListState extends State<ParticipantList> {
         ),
       );
     } else {
-      List<Widget> slivers = List<Widget>();
+      List<Widget> slivers = [];
 
       if (participants.length > 0) {
         var numMembers = participants.length;

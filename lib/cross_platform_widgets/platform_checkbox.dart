@@ -37,7 +37,7 @@ class _PlatformCheckboxState extends State<PlatformCheckbox> with TickerProvider
 
       final BoxConstraints additionalConstraints = BoxConstraints.tight(size);
 
-      return _iOSCheckboxRenderObjectWidget(
+      return _IOSCheckboxRenderObjectWidget(
         value: widget.value,
         tristate: widget.tristate,
         activeColor: widget.activeColor ?? themeData.toggleableActiveColor,
@@ -59,8 +59,8 @@ class _PlatformCheckboxState extends State<PlatformCheckbox> with TickerProvider
   }
 }
 
-class _iOSCheckboxRenderObjectWidget extends LeafRenderObjectWidget {
-  const _iOSCheckboxRenderObjectWidget({
+class _IOSCheckboxRenderObjectWidget extends LeafRenderObjectWidget {
+  const _IOSCheckboxRenderObjectWidget({
     Key key,
     @required this.value,
     @required this.tristate,
@@ -136,6 +136,7 @@ class _RenderiOSCheckbox extends RenderToggleable {
         inactiveColor: inactiveColor,
         onChanged: onChanged,
         additionalConstraints: additionalConstraints,
+        splashRadius: kRadialReactionRadius,
         vsync: vsync,
       );
 

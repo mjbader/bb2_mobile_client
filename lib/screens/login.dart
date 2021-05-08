@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void showError(String error) {
     if (Platform.isAndroid) {
-      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: new Text(error),
       ));
     } else {
@@ -46,11 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginPressed() async {
-//    if (!_whiteList.contains(_username.toLowerCase())) {
-//      showError("User has no rebbl access");
-//      return;
-//    }
-
     setState(() {
       _isLoading = true;
     });

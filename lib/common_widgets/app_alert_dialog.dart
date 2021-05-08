@@ -1,6 +1,4 @@
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter/cupertino.dart' show CupertinoAlertDialog;
-import 'package:flutter/material.dart' show AlertDialog;
 import 'package:flutter/widgets.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
 

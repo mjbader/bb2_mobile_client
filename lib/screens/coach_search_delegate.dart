@@ -50,7 +50,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
     coachSearch = Padding(
       padding: EdgeInsets.only(left: 20),
       child: TextField(
-        style: theme.textTheme.title,
+        style: theme.textTheme.headline6,
         controller: coachController,
         decoration: InputDecoration(
           border: InputBorder.none,
@@ -170,10 +170,9 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
           coachSuggestions.contains(coachController.text)) {
         starIcon = Icon(Icons.star, color: Colors.amber);
       }
-      return FlatButton(
+      return TextButton(
         child: starIcon,
         onPressed: toggleFavoriteQuery,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       );
     } else {
       return Icon(Icons.search);
@@ -241,9 +240,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
                   ],
                 ),
               );
-              ;
             }
-            return Scaffold();
           });
     }
     return Container(color: AppTheme.getBackgroundColor(), child: Column(

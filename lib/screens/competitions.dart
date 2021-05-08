@@ -282,8 +282,6 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         )
     ];
 
-    var addCompPush = pushAddCompetitionScreen;
-
     Widget leadingAction = _editMode
         ? PlatformIconButton(
             icon: Icon(Icons.close),

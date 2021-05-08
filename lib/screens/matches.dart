@@ -604,10 +604,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FlatButton(
+                TextButton(
                     child: matchItem,
                     onPressed: onPressed,
-                    textColor: status == 2 ? Colors.grey : AppTheme.getTextColor()),
+                    style: TextButton.styleFrom(
+                      primary: status == 2 ? Colors.grey : AppTheme.getTextColor())
+                    )
               ]);
         },
       );
@@ -654,7 +656,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       );
     }
 
-    List<Widget> actions = List<Widget>();
+    List<Widget> actions = [];
 
     if (_compStatus == 0 &&
         !isReadyToStart()) {
