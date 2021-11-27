@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    BB2Admin.defaultManager.connect(_username,_password).then((result) {
+    BB2Admin.defaultManager.connect(username: _username,password: _password).then((result) {
       if (_rememberMe) {
         final storage = new FlutterSecureStorage();
         storage.write(key: "bb2username", value: _username);

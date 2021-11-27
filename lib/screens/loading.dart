@@ -45,7 +45,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       }
 
       if (username.isNotEmpty && password.isNotEmpty) {
-        BB2Admin.defaultManager.connect(username,password).then((result) {
+        BB2Admin.defaultManager.connect(username: username,password: password).then((result) {
           Navigator.pushReplacement(context, platformPageRoute(context: context, builder: (context) => LeagueScreen()));
         }, onError: (error) {
           navigateToLogin();
