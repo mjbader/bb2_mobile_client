@@ -3130,4 +3130,4 @@ var _text = '''<MatchResult>
 </Row>
 </MatchResult>''';
 
-var matchRecordMock = xml.parse(_text).firstChild;
+var matchRecordMock = xml.XmlDocument.parse(_text).firstChild;

@@ -35,8 +35,6 @@ Future<T?> showPlatformActionSheet<T>(
           return SimpleDialog(title: Text(title), children: actions, backgroundColor: AppTheme.getAlertBackgroundcolor(),);
         });
   }
-
-
 }
 
 class PlatformActionSheetAction<T> {

@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     Widget button =  Builder(
-        builder: (context) => PlatformButton(
+        builder: (context) => PlatformTextButton(
       child: Text('Login'),
       onPressed: isLoginButtonEnabled() ? () => loginPressed() : null,
       )

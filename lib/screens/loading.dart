@@ -24,8 +24,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     var passwordFuture = storage.read(key: "bb2password");
     var prefsFuture = SharedPreferences.getInstance();
     Future.wait([userFuture, passwordFuture, prefsFuture]).then((List<dynamic> values) {
-      String username = values[0];
-      String password = values[1];
+      String? username = values[0];
+      String? password = values[1];
       SharedPreferences prefs = values[2];
 
       try {

@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'dart:io';
-import 'dart:math' as math;
 
 class PlatformCheckbox extends StatefulWidget {
 

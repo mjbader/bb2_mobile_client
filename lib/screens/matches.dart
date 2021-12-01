@@ -378,6 +378,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       onComplete: this.onMatchAdminned,
                     )));
         break;
+      default:
+        break;
     }
   }
 
@@ -562,7 +564,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         children += [
           Padding(
             padding: EdgeInsets.all(10),
-            child: PlatformButton(
+            child: PlatformTextButton(
 //              icon: Icon(Icons.play_arrow),
               child: Text('Start Competition'),
               onPressed: onPressed,
@@ -640,7 +642,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         Function()? onPressed = isReadyToAdvance() ? advanceRound : null;
 
         children += [
-          PlatformButton(
+          PlatformTextButton(
 //            icon: Icon(Icons.play_arrow),
             child: Text('Advance Week'),
             onPressed: onPressed,

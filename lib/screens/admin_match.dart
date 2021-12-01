@@ -182,7 +182,7 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
                 Text('Is Concede', style: TextStyle(fontSize: 16.0))
               ],
             ),
-          PlatformButton(
+          PlatformTextButton(
             child: Text("Submit"),
             onPressed: () => onSubmit(context),
           ),
