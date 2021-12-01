@@ -6,15 +6,15 @@ import 'package:bb2_mobile_app/types.dart';
 
 class MatchItem extends StatelessWidget {
   final XmlElement matchElement;
-  final HashMap<String, XmlElement> participants;
+  final HashMap<String?, XmlElement> participants;
 
-  const MatchItem({Key key, this.matchElement, this.participants}) : super(key:key);
+  const MatchItem({Key? key, required this.matchElement, required this.participants}) : super(key:key);
 
   @override
   Widget build(BuildContext context) {
     var status = int.parse(matchElement.findElements("IdStatus").first.text);
     var homeScore = matchElement.findElements("HomeScore").first.text;
-    var homeTeamId = matchElement.findElements("IdTeamHome").first.firstChild.text;
+    var homeTeamId = matchElement.findElements("IdTeamHome").first.firstChild?.text;
     var homeTeam = participants[homeTeamId];
     var homeTeamName = "Loading...";
     var homeCoachName = "Loading...";
@@ -28,7 +28,7 @@ class MatchItem extends StatelessWidget {
     }
 
     var awayScore = matchElement.findElements("AwayScore").first.text;
-    var awayTeamId = matchElement.findElements("IdTeamAway").first.firstChild.text;
+    var awayTeamId = matchElement.findElements("IdTeamAway").first.firstChild?.text;
     var awayTeam = participants[awayTeamId];
     var awayTeamName = "Loading...";
     var awayCoachName = "Loading...";

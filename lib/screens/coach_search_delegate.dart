@@ -17,12 +17,12 @@ class CoachAndTeam {
   final String teamId;
 }
 
-class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
+class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
   var currentQuery = "";
   var isLoading = false;
-  SharedPreferences prefs;
-  List<String> teamSuggestions;
-  List<String> coachSuggestions;
+  SharedPreferences? prefs;
+  List<String> teamSuggestions = [];
+  List<String> coachSuggestions = [];
 
   var suggestions = ["[ADMIN]"];
 
@@ -36,17 +36,16 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
     );
   }
 
-  Widget coachSearch;
-  TextEditingController coachController;
+  late Widget coachSearch;
+  TextEditingController coachController = TextEditingController();
 
   CoachSearchDelegate(BuildContext context) {
     var theme = appBarTheme(context);
     SharedPreferences.getInstance().then((prefs) {
       this.prefs = prefs;
-      teamSuggestions = prefs.getStringList("search_team_query_suggestions");
-      coachSuggestions = prefs.getStringList("search_coach_query_suggestions");
+      teamSuggestions = prefs.getStringList("search_team_query_suggestions") ?? [];
+      coachSuggestions = prefs.getStringList("search_coach_query_suggestions") ?? [];
     });
-    coachController = TextEditingController();
     coachSearch = Padding(
       padding: EdgeInsets.only(left: 20),
       child: TextField(
@@ -83,7 +82,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
         .first
         .findElements("ID")
         .first
-        .firstChild
+        .firstChild!
         .text;
     showPlatformDialog<void>(
         context: context,
@@ -110,11 +109,6 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   }
 
   void toggleFavoriteQuery() async {
-    SharedPreferences prefs = this.prefs;
-    if (teamSuggestions == null && coachSuggestions == null) {
-      teamSuggestions = [];
-      coachSuggestions = [];
-    }
     var add = true;
     for (var i = 0; i < teamSuggestions.length; ++i) {
       if (query == teamSuggestions[i] &&
@@ -130,8 +124,8 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
       teamSuggestions += [query];
       coachSuggestions += [coachController.text];
     }
-    prefs.setStringList("search_team_query_suggestions", teamSuggestions);
-    prefs.setStringList("search_coach_query_suggestions", coachSuggestions);
+    prefs?.setStringList("search_team_query_suggestions", teamSuggestions);
+    prefs?.setStringList("search_coach_query_suggestions", coachSuggestions);
     triggerRerender();
   }
 
@@ -164,9 +158,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
   Widget buildLeading(BuildContext context) {
     if (query.length > 2 || coachController.text.length > 2) {
       var starIcon = Icon(Icons.star_border, color: Colors.amber);
-      if (teamSuggestions != null &&
-          teamSuggestions.contains(query) &&
-          coachSuggestions != null &&
+      if (teamSuggestions.contains(query) &&
           coachSuggestions.contains(coachController.text)) {
         starIcon = Icon(Icons.star, color: Colors.amber);
       }
@@ -207,9 +199,9 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam> {
               var listView = ListView.separated(
                   separatorBuilder: (BuildContext context, int index) =>
                       Divider(),
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
-                    var data = snapshot.data.elementAt(index);
+                    var data = snapshot.data!.elementAt(index);
                     Widget participantView = ParticipantItem(participant: data);
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

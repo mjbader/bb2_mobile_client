@@ -6,11 +6,11 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
 
 class CPTextField extends StatelessWidget {
-  final String placeholder;
-  final Function onChanged;
-  final bool obscureText;
+  final String? placeholder;
+  final Function(String)? onChanged;
+  final bool? obscureText;
 
-  CPTextField({Key key, this.placeholder, this.onChanged, this.obscureText})
+  CPTextField({Key? key, this.placeholder, this.onChanged, this.obscureText})
       : super(key: key);
 
   @override

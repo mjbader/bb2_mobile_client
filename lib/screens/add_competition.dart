@@ -3,7 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class AddCompetition extends StatefulWidget {
 
-  AddCompetition({Key key, this.leagueId, this.leagueName}) : super(key: key);
+  AddCompetition({Key? key, required this.leagueId, required this.leagueName}) : super(key: key);
 
   final String leagueId;
   final String leagueName;

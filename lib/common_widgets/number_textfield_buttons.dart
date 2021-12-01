@@ -4,9 +4,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
 
 class NumberPicker extends StatefulWidget {
-  const NumberPicker({Key key,
-    this.onChanged,
-    this.value,
+  const NumberPicker({Key? key,
+    required this.onChanged,
+    required this.value,
     this.min = 1,
     this.max,
     this.label
@@ -18,8 +18,8 @@ class NumberPicker extends StatefulWidget {
   final ValueChanged<int> onChanged;
   final int value;
   final int min;
-  final int max;
-  final String label;
+  final int? max;
+  final String? label;
 }
 
 class _NumberPickerState extends State<NumberPicker> {
@@ -29,9 +29,9 @@ class _NumberPickerState extends State<NumberPicker> {
 
   @override
   Widget build(BuildContext context) {
-    Function minusFunc;
+    Function()? minusFunc;
     Color minusColor = AppTheme.getTextColor();
-    Function plusFunc;
+    Function()? plusFunc;
     Color plusColor = AppTheme.getTextColor();
     if (widget.value > widget.min) {
       minusFunc = () => valueChanged(widget.value - 1);
@@ -39,7 +39,7 @@ class _NumberPickerState extends State<NumberPicker> {
       minusColor = Colors.grey;
     }
 
-    if (widget.max == null || widget.value < widget.max) {
+    if (widget.max == null || widget.value < widget.max!) {
       plusFunc  = () => valueChanged(widget.value + 1);
     } else {
       plusColor = Colors.grey;
@@ -48,7 +48,7 @@ class _NumberPickerState extends State<NumberPicker> {
     return Column(
         children: <Widget>[
     if (this.widget.label != null)
-    Text(this.widget.label), Container(
+    Text(this.widget.label!), Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         margin: const EdgeInsets.all(0),
         decoration: BoxDecoration(

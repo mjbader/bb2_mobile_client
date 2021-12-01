@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
 
 
-Future<T> showPlatformActionSheet<T>(
-    {@required BuildContext context,
-    List<PlatformActionSheetAction<T>> children,
-    String title}) {
+Future<T?> showPlatformActionSheet<T>(
+    {required BuildContext context,
+    required List<PlatformActionSheetAction<T>> children,
+    required String title}) {
   if (Platform.isIOS) {
     var actions = children.map((action) {
       return CupertinoActionSheetAction(
@@ -43,5 +43,5 @@ class PlatformActionSheetAction<T> {
   final Widget widget;
   final T result;
 
-  PlatformActionSheetAction({this.widget, this.result});
+  PlatformActionSheetAction({required this.widget, required this.result});
 }

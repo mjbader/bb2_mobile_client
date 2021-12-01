@@ -20,7 +20,7 @@ import 'package:bb2_mobile_app/common_widgets/app_alert_dialog.dart';
 
 
 class MatchesScreen extends StatefulWidget {
-  MatchesScreen({Key key, this.title, this.compId, this.compChanged})
+  MatchesScreen({Key? key, required this.title, required this.compId, required this.compChanged})
       : super(key: key);
   final String title;
   final String compId;
@@ -33,19 +33,19 @@ class MatchesScreen extends StatefulWidget {
 enum _MatchOptions { validate, reset, info, admin }
 
 class _MatchesScreenState extends State<MatchesScreen> {
-  XmlElement _compData;
-  List<XmlElement> _matches;
-  List<XmlElement> _weekMatches;
-  HashMap<String, XmlElement> _participants;
+  XmlElement? _compData;
+  List<XmlElement>? _matches;
+  List<XmlElement>? _weekMatches;
+  HashMap<String, XmlElement>? _participants;
   List<XmlElement> _inComp = [];
-  int _rounds;
-  int _currentRound;
-  int _selectedRound;
+  late int _rounds;
+  late int _currentRound;
+  late int _selectedRound;
   bool _requestSending = false;
-  int _compStatus;
-  int _maxTeams;
-  int _regTeams;
-  int _compType;
+  int? _compStatus;
+  late int _maxTeams;
+  late int _regTeams;
+  late int _compType;
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void updateWeekMatches() {
-    _weekMatches = _matches.where((element) {
+    _weekMatches = _matches?.where((element) {
       int matchRound = int.parse(element
           .findElements("Row")
           .first
@@ -84,7 +84,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   bool isReadyToAdvance() {
-    return _weekMatches.every((element) {
+    return _weekMatches?.every((element) {
       return int.parse(element
               .findElements("Matches")
               .first
@@ -94,7 +94,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               .first
               .text) !=
           0;
-    });
+    }) ?? false;
   }
 
   bool isReadyToStart() {
@@ -127,7 +127,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               PlatformDialogAction(
                 child: Text('Yes'),
                 onPressed: () {
-                  var compId = _compData
+                  var compId = _compData!
                       .findAllElements("RowCompetition")
                       .first
                       .findElements("Id")
@@ -167,7 +167,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               PlatformDialogAction(
                 child: Text('Yes'),
                 onPressed: () {
-                  var compId = _compData
+                  var compId = _compData!
                       .findAllElements("RowCompetition")
                       .first
                       .findElements("Id")
@@ -192,7 +192,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void _validateMatch(String matchId) {
-    var compId = _compData
+    var compId = _compData!
         .findAllElements("RowCompetition")
         .first
         .findElements("Id")
@@ -211,7 +211,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void _resetMatch(String matchId) {
-    var compId = _compData
+    var compId = _compData!
         .findAllElements("RowCompetition")
         .first
         .findElements("Id")
@@ -361,9 +361,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
         break;
       case _MatchOptions.admin:
         var homeTeamId =
-            match.matchElement.findElements("IdTeamHome").first.firstChild.text;
+            match.matchElement.findElements("IdTeamHome").first.firstChild!.text;
         var awayTeamId =
-            match.matchElement.findElements("IdTeamAway").first.firstChild.text;
+            match.matchElement.findElements("IdTeamAway").first.firstChild!.text;
         Navigator.push(
             context,
             platformPageRoute(
@@ -372,8 +372,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       matchId: matchId,
                       compId: widget.compId,
                       participants: [
-                        _participants[homeTeamId],
-                        _participants[awayTeamId]
+                        _participants![homeTeamId]!,
+                        _participants![awayTeamId]!
                       ],
                       onComplete: this.onMatchAdminned,
                     )));
@@ -395,9 +395,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
       _participants = new HashMap<String, XmlElement>();
       compData.findAllElements("CompetitionParticipant").fold(_participants,
-          (players, element) {
-        var id = element.findAllElements("ID").first.firstChild.text;
-        players[id] = element;
+          (HashMap<String, XmlElement>? players, element) {
+        var id = element.findAllElements("ID").first.firstChild!.text;
+        players?[id] = element;
         return players;
       });
 
@@ -435,13 +435,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
       _rounds = int.parse(compData.findAllElements("NbRounds").first.text);
 
-      if (_matches.length != 0) {
+      if ((_matches?.length ?? 0) != 0) {
         updateWeekMatches();
       }
     });
   }
 
-  void updateData({XmlElement compData}) {
+  void updateData({XmlElement? compData}) {
     widget.compChanged();
 
     if (compData != null) {
@@ -491,12 +491,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void addAI() {
-    var leagueId = _compData
+    var leagueId = _compData!
         .findElements("RowLeague")
         .first
         .findElements("Id")
         .first
-        .firstChild
+        .firstChild!
         .text;
     BB2Admin.defaultManager.addAIToComp(widget.compId, leagueId).then((value) {
       updateData();
@@ -507,12 +507,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
     var resultFuture =
         showSearch(context: context, delegate: CoachSearchDelegate(context));
     resultFuture.then((result) {
-      var leagueId = _compData
+      var leagueId = _compData!
           .findElements("RowLeague")
           .first
           .findElements("Id")
           .first
-          .firstChild
+          .firstChild!
           .text;
       if (result != null) {
         var ticketSendFuture = BB2Admin.defaultManager.createAndSendTicket(
@@ -585,19 +585,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
     } else {
       var listView = ListView.separated(
         separatorBuilder: (BuildContext context, int index) => Divider(),
-        itemCount: _weekMatches.length,
+        itemCount: _weekMatches?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
-          var matchData = _weekMatches[index]
+          var matchData = _weekMatches![index]
               .findElements("Matches")
               .first
               .findElements("RowCompetitionMatch")
               .first;
 
-          Function onPressed;
+          Function()? onPressed;
           var matchItem =
-              MatchItem(matchElement: matchData, participants: _participants);
+              MatchItem(matchElement: matchData, participants: _participants!);
           var status = int.parse(matchData.findElements("IdStatus").first.text);
-          var id = matchData.findElements("Id").first.firstChild.text;
+          var id = matchData.findElements("Id").first.firstChild!.text;
           onPressed = () => _matchSelected(status, context, matchItem, id);
 
           return Column(
@@ -637,7 +637,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         children += [PlatformCircularProgressIndicator()];
       } else if (_currentRound == _selectedRound &&
           _compStatus != CompetitionStatus.completed) {
-        Function onPressed = isReadyToAdvance() ? advanceRound : null;
+        Function()? onPressed = isReadyToAdvance() ? advanceRound : null;
 
         children += [
           PlatformButton(

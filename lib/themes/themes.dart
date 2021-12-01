@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static CupertinoThemeData getCupertinoThemeData() {
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     return CupertinoThemeData(
       scaffoldBackgroundColor: getBackgroundColor(),
         brightness: brightness,
@@ -75,21 +75,21 @@ class AppTheme {
   }
 
   static Color getTextColor() {
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? Colors.white : Colors.black;
   }
 
   static Color getLoginBackgroundColor() {
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? Color(0xFF121212) : Colors.red;
   }
 
   static Color getLoginForegroundColor() {
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? Colors.white24 : Colors.white;
@@ -97,21 +97,21 @@ class AppTheme {
 
   static Color getBackgroundColor() {
 
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? Color(0xFF121212) : Colors.white;
   }
 
   static Color getAlertBackgroundcolor() {
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? Color(0xFF171717) : Colors.white;
   }
 
   static ThemeData getThemeData(BuildContext context) {
-    Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
     bool isDark = brightness == Brightness.dark;
 
     return isDark ? getDarkThemeData(context) : getLightThemeData(context);

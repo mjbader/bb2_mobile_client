@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingScreen extends StatefulWidget {
-  LoadingScreen({Key key}) : super(key: key);
+  LoadingScreen({Key? key}) : super(key: key);
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -29,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       SharedPreferences prefs = values[2];
 
       try {
-        var autologin = prefs.getBool("autologin");
+        var autologin = prefs.getBool("autologin") ?? false;
         if (!autologin) {
           navigateToLogin();
           return;

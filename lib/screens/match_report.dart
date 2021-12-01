@@ -9,7 +9,7 @@ import 'package:xml/xml.dart';
 class MatchReport extends StatefulWidget {
   final String matchId;
 
-  MatchReport({Key key, this.matchId}) : super(key: key);
+  MatchReport({Key? key, required this.matchId}) : super(key: key);
 
   @override
   _MatchReportState createState() => _MatchReportState();
@@ -19,6 +19,8 @@ class _TeamInfo {
   String teamName;
   String coachName;
   int score;
+
+  _TeamInfo(this.teamName, this.coachName, this.score);
 }
 
 class _MatchReportState extends State<MatchReport> {
@@ -44,13 +46,13 @@ class _MatchReportState extends State<MatchReport> {
 //    'MVP'
   ];
   static const _teamTypes = ['Home', 'Away'];
-  XmlElement _matchRecord;
+  XmlElement? _matchRecord;
 
-  LinkedHashMap<String, HashMap<String, String>> _matchStats;
+  LinkedHashMap<String, HashMap<String, String>>? _matchStats;
 
-  _TeamInfo homeInfo;
+  _TeamInfo? homeInfo;
 
-  _TeamInfo awayInfo;
+  _TeamInfo? awayInfo;
 
   @override
   void initState() {
@@ -60,13 +62,14 @@ class _MatchReportState extends State<MatchReport> {
 
   LinkedHashMap<String, HashMap<String, String>> returnMatchStats() {
     var hashMap = LinkedHashMap<String, HashMap<String, String>>();
-    var matchRow = _matchRecord.findElements("Row").first;
+
+    var matchRow = _matchRecord!.findElements("Row").first;
 
     for (var attribute in _attributes) {
       hashMap[attribute] = HashMap<String, String>();
       for (var teamType in _teamTypes) {
         var key = "$teamType$attribute";
-        hashMap[attribute]["${teamType}Value"] =
+        hashMap[attribute]?["${teamType}Value"] =
             matchRow.findElements(key).first.text;
       }
     }
@@ -80,22 +83,23 @@ class _MatchReportState extends State<MatchReport> {
             if (hashMap["$statType $statName"] == null) {
               hashMap["$statType $statName"] = HashMap<String, String>();
             }
-            hashMap["$statType $statName"]["${teamType}Value"] =
+            hashMap["$statType $statName"]?["${teamType}Value"] =
                 elements.first.text;
           }
         }
       }
       for (var teamType in _teamTypes) {
-        _TeamInfo generalInfo = _TeamInfo();
+        var teamName = matchRow.findElements("Team${teamType}Name").first.text;
+        var coachName = matchRow.findElements("Coach${teamType}Name");
+        var coachNameString = coachName.isNotEmpty ? coachName.first.text : "AI";
+        var score = int.parse(matchRow.findElements("${teamType}Score").first.text);
+
+        _TeamInfo generalInfo = _TeamInfo(teamName, coachNameString, score);
         if (teamType == "Away") {
           awayInfo = generalInfo;
         } else {
           homeInfo = generalInfo;
         }
-        generalInfo.teamName = matchRow.findElements("Team${teamType}Name").first.text;
-        var coachName = matchRow.findElements("Coach${teamType}Name");
-        generalInfo.coachName = coachName.isNotEmpty ? coachName.first.text : "AI";
-        generalInfo.score = int.parse(matchRow.findElements("${teamType}Score").first.text);
       }
     }
     return hashMap;
@@ -105,6 +109,10 @@ class _MatchReportState extends State<MatchReport> {
 //    var matchRecord = matchRecordMock;
     BB2Admin.defaultManager.getMatchRecord(widget.matchId).then((matchRecord) {
       setState(() {
+        if (_matchRecord == null) {
+          return;
+        }
+
         _matchRecord = matchRecord;
         _matchStats = returnMatchStats();
       });
@@ -117,7 +125,7 @@ class _MatchReportState extends State<MatchReport> {
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          for (var key in _matchStats.keys) Text(_matchStats[key]["HomeValue"]),
+          for (var key in _matchStats!.keys) Text(_matchStats![key]!["HomeValue"]!),
         ],
       )
     ];
@@ -125,7 +133,7 @@ class _MatchReportState extends State<MatchReport> {
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          for (var key in _matchStats.keys) Text(key),
+          for (var key in _matchStats!.keys) Text(key),
         ],
       )
     ];
@@ -133,7 +141,7 @@ class _MatchReportState extends State<MatchReport> {
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          for (var key in _matchStats.keys) Text(_matchStats[key]["AwayValue"]),
+          for (var key in _matchStats!.keys) Text(_matchStats![key]!["AwayValue"]!),
         ],
       )
     ];
@@ -161,13 +169,13 @@ class _MatchReportState extends State<MatchReport> {
     } else {
       var headerInfo = Row(children: <Widget>[
         Column(children: <Widget>[
-          Text(homeInfo.teamName, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),),
-          Text(homeInfo.coachName),
+          Text(homeInfo!.teamName, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),),
+          Text(homeInfo!.coachName),
         ],
           crossAxisAlignment: CrossAxisAlignment.start,),
         Column(children: <Widget>[
-          Text(awayInfo.teamName, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-          Text(awayInfo.coachName),
+          Text(awayInfo!.teamName, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+          Text(awayInfo!.coachName),
         ],
           crossAxisAlignment: CrossAxisAlignment.end,)
       ],
@@ -175,7 +183,7 @@ class _MatchReportState extends State<MatchReport> {
       body = SingleChildScrollView(
         child: Column(children: <Widget>[
           headerInfo,
-          Text("${homeInfo.score.toString()} - ${awayInfo.score.toString()}", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+          Text("${homeInfo!.score.toString()} - ${awayInfo!.score.toString()}", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
           Divider(),
           renderColumns()
         ],),

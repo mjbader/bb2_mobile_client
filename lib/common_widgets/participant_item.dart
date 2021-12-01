@@ -4,7 +4,7 @@ import 'package:xml/xml.dart';
 class ParticipantItem extends StatelessWidget {
   final XmlElement participant;
 
-  const ParticipantItem({Key key, this.participant}) : super(key:key);
+  const ParticipantItem({Key? key, required this.participant}) : super(key:key);
 
   @override
   Widget build(BuildContext context) {

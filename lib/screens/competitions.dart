@@ -1,4 +1,4 @@
-import 'package:bb2_mobile_app/screens/add_competition.dart';
+// import 'package:bb2_mobile_app/screens/add_competition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -11,7 +11,7 @@ import 'package:bb2_mobile_app/common_widgets/list_item.dart';
 import 'package:xml/xml.dart';
 
 class CompetitionsScreen extends StatefulWidget {
-  CompetitionsScreen({Key key, this.title, this.leagueId}) : super(key: key);
+  CompetitionsScreen({Key? key, required this.title, required this.leagueId}) : super(key: key);
   final String title;
   final String leagueId;
 
@@ -20,7 +20,7 @@ class CompetitionsScreen extends StatefulWidget {
 }
 
 class _CompetitionsScreenState extends State<CompetitionsScreen> {
-  List<XmlElement> _competitions;
+  List<XmlElement>? _competitions;
   bool _editMode = false;
   Set<int> _isSelected = Set<int>();
 
@@ -34,7 +34,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     BB2Admin.defaultManager.getCompetitions(widget.leagueId).then((elements) {
       setState(() {
         _competitions = elements.toList();
-        _competitions.sort((a, b) {
+        _competitions?.sort((a, b) {
           var aStatus = int.parse(a
               .findElements("Row")
               .first
@@ -53,12 +53,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     });
   }
 
-  void pushAddCompetitionScreen() {
-    Navigator.push(
-        context,
-        platformPageRoute(
-            context: context, builder: (context) => AddCompetition()));
-  }
+  // void pushAddCompetitionScreen() {
+  //   Navigator.push(
+  //       context,
+  //       platformPageRoute(
+  //           context: context, builder: (context) => AddCompetition()));
+  // }
 
   void showDeleteConfirmDialog() {
     showPlatformDialog(
@@ -93,12 +93,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 
   void deleteSelectedCompetitions() {
     var compIds = _isSelected.map((index) {
-      return _competitions[index]
+      return _competitions![index]
           .findElements("Row")
           .first
           .findElements("Id")
           .first
-          .firstChild
+          .firstChild!
           .text;
     });
 
@@ -136,12 +136,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     } else {
       body = ListView.separated(
         padding: EdgeInsets.all(8.0),
-        itemCount: _competitions.length,
+        itemCount: _competitions?.length ?? 0,
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
-          var compRow = _competitions[index].findElements("Row").first;
+          var compRow = _competitions![index].findElements("Row").first;
           var name = compRow.findElements("Name").first.text;
-          var id = compRow.findElements("Id").first.firstChild.text;
+          var id = compRow.findElements("Id").first.firstChild!.text;
 
           var status =
               int.parse(compRow.findElements("CompetitionStatus").first.text);
@@ -282,7 +282,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         )
     ];
 
-    Widget leadingAction = _editMode
+    Widget? leadingAction = _editMode
         ? PlatformIconButton(
             icon: Icon(Icons.close),
             onPressed: () {

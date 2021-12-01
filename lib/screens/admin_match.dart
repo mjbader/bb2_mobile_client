@@ -7,7 +7,7 @@ import 'package:BB2Admin/bb2admin.dart';
 
 class AdminMatchScreen extends StatefulWidget {
   AdminMatchScreen(
-      {Key key, this.matchId, this.compId, this.participants, this.onComplete})
+      {Key? key, required this.matchId, required this.compId, required this.participants, required this.onComplete})
       : super(key: key);
 
   @override
@@ -28,8 +28,8 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
   bool submitting = false;
   int homeScore = 0;
   int awayScore = 0;
-  int winDiceHome;
-  int winDiceAway;
+  int? winDiceHome;
+  int? winDiceAway;
 
   void onSubmit(BuildContext context) {
     setState(() {
@@ -124,7 +124,7 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
               : winDiceAway != null)
             NumberPicker(
                 label: winningsDiceLabel,
-                value: teamType == _TeamType.home ? winDiceHome : winDiceAway,
+                value: teamType == _TeamType.home ? winDiceHome! : winDiceAway!,
                 min: 1,
                 max: 6,
                 onChanged: (int value) {

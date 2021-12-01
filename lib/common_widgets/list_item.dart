@@ -5,16 +5,16 @@ import 'package:bb2_mobile_app/cross_platform_widgets/platform_checkbox.dart';
 
 class ListItem extends StatelessWidget {
 
-  ListItem({this.isEditable, this.isSelected, this.onChanged, this.child}) : super();
+  ListItem({this.isEditable, required this.isSelected, required this.onChanged, required this.child}) : super();
 
-  final bool isEditable;
+  final bool? isEditable;
   final bool isSelected;
-  final Function onChanged;
+  final Function(bool?) onChanged;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    if (isEditable) {
+    if (isEditable ?? false) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[

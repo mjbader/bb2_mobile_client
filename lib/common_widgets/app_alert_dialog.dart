@@ -12,13 +12,13 @@ import 'package:bb2_mobile_app/themes/themes.dart';
 //final PlatformBuilder<CupertinoAlertDialogData> ios;
 class AppAlertDialog extends PlatformAlertDialog {
   AppAlertDialog(
-      {Key key,
-        Key widgetKey,
-        List<Widget> actions,
-        Widget content,
-        Widget title,
-        PlatformBuilder<MaterialAlertDialogData> android,
-        PlatformBuilder<CupertinoAlertDialogData> cupertino})
+      {Key? key,
+        Key? widgetKey,
+        List<Widget>? actions,
+        Widget? content,
+        Widget? title,
+        PlatformBuilder<MaterialAlertDialogData>? android,
+        PlatformBuilder<CupertinoAlertDialogData>? cupertino})
       : super(key: key,
       widgetKey: widgetKey,
       actions: actions,

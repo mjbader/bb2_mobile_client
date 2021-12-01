@@ -6,14 +6,14 @@ import 'package:bb2_mobile_app/screens/competitions.dart';
 import 'package:xml/xml.dart';
 
 class LeagueScreen extends StatefulWidget {
-  LeagueScreen({Key key}) : super(key: key);
+  LeagueScreen({Key? key}) : super(key: key);
 
   @override
   _LeagueScreenState createState() => _LeagueScreenState();
 }
 
 class _LeagueScreenState extends State<LeagueScreen> {
-  List<XmlElement> _leagues;
+  List<XmlElement>? _leagues;
 
   @override void initState() {
     super.initState();
@@ -44,12 +44,13 @@ class _LeagueScreenState extends State<LeagueScreen> {
         ),
       );
     } else {
+      var leagues = _leagues!;
       body = ListView.separated(
         separatorBuilder: (BuildContext context, int index) => Container(color: Theme.of(context).dividerColor, height: 0.5, margin: EdgeInsets.all(0),),
-        itemCount: _leagues.length,
+        itemCount: leagues.length,
         itemBuilder: (BuildContext context, int index) {
-          var name = _leagues[index].findAllElements("Name").first.text;
-          var leagueId = _leagues[index].findAllElements("RowLeague").first.findAllElements("Id").first.firstChild.text;
+          var name = leagues[index].findAllElements("Name").first.text;
+          var leagueId = leagues[index].findAllElements("RowLeague").first.findAllElements("Id").first.firstChild!.text;
           return TextButton(
               onPressed: () {
                 var title = name;

@@ -9,7 +9,7 @@ import 'package:bb2_mobile_app/themes/themes.dart';
 
 class ParticipantList extends StatefulWidget {
   ParticipantList(
-      {Key key, this.compId, this.maxTeams, this.onKick})
+      {Key? key, required this.compId, required this.maxTeams, required this.onKick})
       : super(key: key);
   final String compId;
   final int maxTeams;
@@ -20,8 +20,8 @@ class ParticipantList extends StatefulWidget {
 }
 
 class _ParticipantListState extends State<ParticipantList> {
-  List<XmlElement> teamsInvited;
-  List<XmlElement> participants;
+  List<XmlElement>? teamsInvited;
+  List<XmlElement>? participants;
 
   @override
   void initState() {
@@ -33,11 +33,11 @@ class _ParticipantListState extends State<ParticipantList> {
     BB2Admin.defaultManager.getSentTickets(widget.compId).then((tickets) {
       BB2Admin.defaultManager.getCompetitionData(widget.compId).then((element) {
         setState(() {
-          participants = new List<XmlElement>();
+          participants = <XmlElement>[];
           participants = element.findAllElements("CompetitionParticipant").fold(participants,
                   (players, element) {
                 var status = int.parse(element.findElements("IdTeamCompetitionStatus").first.text);
-                if (status == 1) {
+                if (status == 1 && players != null) {
                   players += [element];
                 }
                 return players;
@@ -69,13 +69,13 @@ class _ParticipantListState extends State<ParticipantList> {
                       .first
                       .findElements("Id")
                       .first
-                      .firstChild
+                      .firstChild!
                       .text;
                   setState(() {
                     teamsInvited = null;
                   });
                   BB2Admin.defaultManager.deleteTicket(ticketId).then((value) {
-                    participants.remove(participant);
+                    participants?.remove(participant);
                     widget.onKick();
                     refreshData();
                   });
@@ -108,7 +108,7 @@ class _ParticipantListState extends State<ParticipantList> {
                       .first
                       .findElements("ID")
                       .first
-                      .firstChild
+                      .firstChild!
                       .text;
                   setState(() {
                     teamsInvited = null;
@@ -116,7 +116,7 @@ class _ParticipantListState extends State<ParticipantList> {
                   BB2Admin.defaultManager
                       .expelTeamFromComp(widget.compId, teamId)
                       .then((value) {
-                    participants.remove(participant);
+                    participants?.remove(participant);
                     widget.onKick();
                     refreshData();
                   });
@@ -162,14 +162,14 @@ class _ParticipantListState extends State<ParticipantList> {
         .first
         .findElements("ID")
         .first
-        .firstChild
+        .firstChild!
         .text;
-    var ticketId = participant.findElements("Row").first.findElements("Id").first.firstChild.text;
+    var ticketId = participant.findElements("Row").first.findElements("Id").first.firstChild!.text;
     BB2Admin.defaultManager.getTeamsInfo([teamId]).then((teamInfos) {
       var compRows = teamInfos.first.findAllElements("RowCompetition");
 
       if (compRows.length > 0) {
-        var compId = teamInfos.first.findAllElements("RowCompetition").first.findElements("Id").first.firstChild.text;
+        var compId = teamInfos.first.findAllElements("RowCompetition").first.findElements("Id").first.firstChild!.text;
         BB2Admin.defaultManager.expelTeamFromComp(compId, teamId).then((result) {
           BB2Admin.defaultManager.acceptTicket(this.widget.compId, teamId, ticketId).then((value) {
             refreshData();
@@ -186,10 +186,10 @@ class _ParticipantListState extends State<ParticipantList> {
   }
 
   SliverStickyHeader createList(
-      {String header,
-      List<XmlElement> elements,
-      Function deleteFunction,
-      Function forceAccept}) {
+      {required String header,
+      List<XmlElement>? elements,
+      required Function deleteFunction,
+      Function? forceAccept}) {
     return SliverStickyHeader(
         header: new Container(
           height: 40.0,
@@ -209,15 +209,15 @@ class _ParticipantListState extends State<ParticipantList> {
                 icon: Icon(Icons.delete),
                 padding: EdgeInsets.only(right: 10),
                 color: Colors.red,
-                onPressed: () => deleteFunction(elements[index]))
+                onPressed: () => deleteFunction(elements?[index]))
           ];
-          var nameElements = elements[index].findAllElements("RowTeam").first.findElements("Name");
-          if (forceAccept != null && nameElements.isNotEmpty && nameElements.first.text.toLowerCase().contains("[admin]")) {
+          var nameElements = elements?[index].findAllElements("RowTeam").first.findElements("Name");
+          if (forceAccept != null && nameElements != null && nameElements.isNotEmpty && nameElements.first.text.toLowerCase().contains("[admin]")) {
             actions += [PlatformIconButton(
                 icon: Icon(Icons.check),
                 padding: EdgeInsets.only(right: 10),
                 color: Colors.red,
-                onPressed: () => forceAccept(elements[index]))
+                onPressed: () => forceAccept(elements?[index]))
             ];
           }
           return Column(
@@ -226,7 +226,7 @@ class _ParticipantListState extends State<ParticipantList> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ParticipantItem(
-                    participant: elements[index],
+                    participant: elements![index],
                   ),
                   Row(children: actions)
                 ],
@@ -234,7 +234,7 @@ class _ParticipantListState extends State<ParticipantList> {
               Divider()
             ],
           );
-        }, childCount: elements.length)));
+        }, childCount: elements?.length)));
   }
 
   @override
@@ -258,10 +258,10 @@ class _ParticipantListState extends State<ParticipantList> {
         ),
       );
     } else {
-      List<Widget> slivers = List<Widget>();
+      List<Widget> slivers = <Widget>[];
 
-      if (participants.length > 0) {
-        var numMembers = participants.length;
+      if ((participants?.length ?? 0) > 0) {
+        var numMembers = participants!.length;
         slivers += [
           createList(
               header: 'Participants - $numMembers/${widget.maxTeams}',
@@ -270,9 +270,9 @@ class _ParticipantListState extends State<ParticipantList> {
         ];
       }
 
-      if (teamsInvited.length > 0) {
+      if ((teamsInvited?.length ?? 0) > 0) {
         var forceAcceptFunction;
-        if (participants.length < widget.maxTeams) {
+        if ((participants?.length  ?? 0) < widget.maxTeams) {
           forceAcceptFunction = forceAcceptDialog;
         }
 

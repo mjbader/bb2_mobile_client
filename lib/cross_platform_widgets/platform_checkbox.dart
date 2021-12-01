@@ -7,19 +7,19 @@ import 'dart:math' as math;
 class PlatformCheckbox extends StatefulWidget {
 
   const PlatformCheckbox({
-    Key key,
-    @required this.value,
+    Key? key,
+    required this.value,
     this.tristate = false,
-    @required this.onChanged,
+    required this.onChanged,
     this.activeColor,
     this.checkColor,
   }) : super(key: key);
 
   final bool value;
   final bool tristate;
-  final Color activeColor;
-  final Color checkColor;
-  final ValueChanged<bool> onChanged;
+  final Color? activeColor;
+  final Color? checkColor;
+  final Function(bool?) onChanged;
   static const width = 20.0;
 
   @override
