@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/screens/competitions.dart';
@@ -38,7 +37,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: PlatformCircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             ),
           ],
         ),
@@ -46,7 +45,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
     } else {
       var leagues = _leagues!;
       body = ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Container(color: Theme.of(context).dividerColor, height: 0.5, margin: EdgeInsets.all(0),),
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemCount: leagues.length,
         itemBuilder: (BuildContext context, int index) {
           var name = leagues[index].findAllElements("Name").first.text;
@@ -55,7 +54,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
               onPressed: () {
                 var title = name;
                 var compScreen = CompetitionsScreen(title: title, leagueId: leagueId);
-                Navigator.push(context, platformPageRoute(context: context, builder: (context) => compScreen,));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => compScreen,));
               },
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -68,8 +67,8 @@ class _LeagueScreenState extends State<LeagueScreen> {
       );
     }
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text("Leagues"),
       ),
       body: body

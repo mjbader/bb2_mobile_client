@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter/material.dart';
 
 class AddCompetition extends StatefulWidget {
 
@@ -17,9 +16,9 @@ class _AddCompetitionState extends State<AddCompetition> {
   @override
   Widget build(BuildContext context) {
     var body = Row();
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: PlatformText("Add Competition"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add Competition"),
       ),
       body: SafeArea(
         child: body,

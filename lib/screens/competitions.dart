@@ -1,7 +1,6 @@
 // import 'package:bb2_mobile_app/screens/add_competition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'dart:io';
 
 import 'package:BB2Admin/bb2admin.dart';
@@ -61,20 +60,20 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   // }
 
   void showDeleteConfirmDialog() {
-    showPlatformDialog(
+    showDialog(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AlertDialog(
             title: Text('Are you sure you want to delete these competitions?'),
             content: Text('This action is irreversible.'),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Delete'),
                 onPressed: () {
                   deleteSelectedCompetitions();
@@ -128,7 +127,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: PlatformCircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             ),
           ],
         ),
@@ -137,7 +136,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       body = ListView.separated(
         padding: EdgeInsets.all(8.0),
         itemCount: _competitions?.length ?? 0,
-        separatorBuilder: (BuildContext context, int index) => Divider(),
+        separatorBuilder: (BuildContext context, int index) => Divider(height: 16,),
         itemBuilder: (BuildContext context, int index) {
           var compRow = _competitions![index].findElements("Row").first;
           var name = compRow.findElements("Name").first.text;
@@ -247,8 +246,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   );
                   Navigator.push(
                       context,
-                      platformPageRoute(
-                          context: context, builder: (context) => compScreen));
+                      MaterialPageRoute(
+                          builder: (context) => compScreen));
                 }
               },
               onLongPress: () {
@@ -269,12 +268,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         _isSelected.isNotEmpty ? showDeleteConfirmDialog : null;
     List<Widget> trailingActions = [
       if (_editMode)
-        PlatformIconButton(
+        IconButton(
           icon: Icon(Icons.delete),
           onPressed: deleteFunction,
         ),
       if (!_editMode)
-        PlatformIconButton(
+        IconButton(
           icon: Icon(Icons.edit),
           onPressed: () => setState(() {
             _editMode = true;
@@ -283,7 +282,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     ];
 
     Widget? leadingAction = _editMode
-        ? PlatformIconButton(
+        ? IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
               setState(() {
@@ -297,7 +296,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     if (Platform.isIOS) {
       if (_editMode) {
         leadingAction = CupertinoButton(
-          child: PlatformText("Cancel"),
+          child: Text("Cancel"),
           onPressed: () => setState(() {
             _editMode = false;
             _isSelected.clear();
@@ -306,7 +305,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         );
         trailingActions = [
           CupertinoButton(
-            child: PlatformText("Delete"),
+            child: Text("Delete"),
             onPressed: deleteFunction,
             padding: EdgeInsets.all(0),
           )
@@ -314,7 +313,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       }
 //      } else {
 //        trailingActions = [
-//          PlatformIconButton(
+//          IconButton(
 //            icon: Icon(
 //              CupertinoIcons.add,
 //              size: 40,
@@ -326,15 +325,15 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 //      }
     }
 
-    return PlatformScaffold(
-      material: (context, platformTarget) => MaterialScaffoldData(
-//          floatingActionButton: FloatingActionButton(
-//        child: Icon(Icons.add),
-//        onPressed: addCompPush,
-          ),
-      appBar: PlatformAppBar(
-        title: PlatformText(widget.title),
-        trailingActions: trailingActions,
+    return Scaffold(
+//       material: (context, platformTarget) => MaterialScaffoldData(
+// //          floatingActionButton: FloatingActionButton(
+// //        child: Icon(Icons.add),
+// //        onPressed: addCompPush,
+//           ),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: trailingActions,
         leading: leadingAction,
       ),
       body: SafeArea(

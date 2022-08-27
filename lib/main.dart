@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bb2_mobile_app/screens/loading.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
-
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 void main() async => runApp(MyApp());
 
@@ -14,15 +11,12 @@ class MyApp extends StatelessWidget {
 
   return Theme(
         data: AppTheme.getThemeData(context),
-        child: PlatformApp(
+        child: MaterialApp(
           title: 'ReBBL Admin App',
           home: LoadingScreen(),
           debugShowCheckedModeBanner: false,
-          material: (_, platformTarget) => MaterialAppData(
-            theme: AppTheme.getLightThemeData(context),
-              darkTheme: AppTheme.getDarkThemeData(context),
-          ),
-          cupertino: (_, platformTarget) => CupertinoAppData(theme: AppTheme.getCupertinoThemeData()),
+          theme: AppTheme.getLightThemeData(context),
+          darkTheme: AppTheme.getDarkThemeData(context),
           localizationsDelegates: [
             DefaultMaterialLocalizations.delegate,
             DefaultWidgetsLocalizations.delegate,

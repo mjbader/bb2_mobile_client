@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/common_widgets/participant_item.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xml/xml.dart';
 import 'package:bb2_mobile_app/common_widgets/suggestions_list.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xml/xml.dart';
 
 class CoachAndTeam {
   CoachAndTeam(this.coachId, this.teamId);
@@ -31,7 +29,6 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
     return theme.copyWith(
       primaryColor: AppTheme.getBackgroundColor(),
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
-      primaryColorBrightness: Brightness.dark,
       primaryTextTheme: theme.textTheme,
     );
   }
@@ -43,8 +40,10 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
     var theme = appBarTheme(context);
     SharedPreferences.getInstance().then((prefs) {
       this.prefs = prefs;
-      teamSuggestions = prefs.getStringList("search_team_query_suggestions") ?? [];
-      coachSuggestions = prefs.getStringList("search_coach_query_suggestions") ?? [];
+      teamSuggestions =
+          prefs.getStringList("search_team_query_suggestions") ?? [];
+      coachSuggestions =
+          prefs.getStringList("search_coach_query_suggestions") ?? [];
     });
     coachSearch = Padding(
       padding: EdgeInsets.only(left: 20),
@@ -84,20 +83,20 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
         .first
         .firstChild!
         .text;
-    showPlatformDialog<void>(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AlertDialog(
             title: Text("Are you sure wish to send this team a ticket?"),
             content: SingleChildScrollView(child: cell),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Send'),
                 onPressed: () {
                   close(context, CoachAndTeam(coachId, teamId));
@@ -135,7 +134,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
 
     if (query.length > 1) {
       actions += [
-        PlatformIconButton(
+        IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
               query = "";
@@ -172,24 +171,27 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) => Container(color: AppTheme.getBackgroundColor(),
+  Widget buildSuggestions(BuildContext context) => Container(
+      color: AppTheme.getBackgroundColor(),
       child: Column(
-    children: <Widget>[
-      coachSearch,
-      Container(color: Theme.of(context).dividerColor, height: 0.5),
-      Expanded(child: SuggestionList(
-        onTapped: (team, coach) {
-          query = team;
-          coachController.text = coach;
-          showResults(context);
-        },
-      ))
-    ],
-  ));
+        children: <Widget>[
+          coachSearch,
+          Container(color: Theme.of(context).dividerColor, height: 0.5),
+          Expanded(child: SuggestionList(
+            onTapped: (team, coach) {
+              query = team;
+              coachController.text = coach;
+              showResults(context);
+            },
+          ))
+        ],
+      ));
 
   @override
   Widget buildResults(BuildContext context) {
-    Widget body = Scaffold(backgroundColor: AppTheme.getBackgroundColor(),);
+    Widget body = Scaffold(
+      backgroundColor: AppTheme.getBackgroundColor(),
+    );
     if (query.length > 2 || coachController.text.length > 2) {
       body = FutureBuilder<Iterable<XmlElement>>(
           future:
@@ -207,7 +209,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         participantView,
-                        PlatformIconButton(
+                        IconButton(
                             icon: Icon(Icons.mail),
                             padding: EdgeInsets.only(right: 10),
                             color: Colors.red,
@@ -227,7 +229,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: PlatformCircularProgressIndicator(),
+                      child: CircularProgressIndicator(),
                     ),
                   ],
                 ),
@@ -235,12 +237,14 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
             }
           });
     }
-    return Container(color: AppTheme.getBackgroundColor(), child: Column(
-      children: <Widget>[
-        coachSearch,
-        Container(color: Theme.of(context).dividerColor, height: 0.5),
-        Expanded(child: body)
-      ],
-    ));
+    return Container(
+        color: AppTheme.getBackgroundColor(),
+        child: Column(
+          children: <Widget>[
+            coachSearch,
+            Container(color: Theme.of(context).dividerColor, height: 0.5),
+            Expanded(child: body)
+          ],
+        ));
   }
 }

@@ -1,7 +1,6 @@
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'dart:collection';
 
 import 'package:xml/xml.dart';
@@ -109,10 +108,6 @@ class _MatchReportState extends State<MatchReport> {
 //    var matchRecord = matchRecordMock;
     BB2Admin.defaultManager.getMatchRecord(widget.matchId).then((matchRecord) {
       setState(() {
-        if (_matchRecord == null) {
-          return;
-        }
-
         _matchRecord = matchRecord;
         _matchStats = returnMatchStats();
       });
@@ -161,7 +156,7 @@ class _MatchReportState extends State<MatchReport> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: PlatformCircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             ),
           ],
         ),
@@ -190,8 +185,8 @@ class _MatchReportState extends State<MatchReport> {
       );
     }
 
-    return PlatformScaffold(
-        appBar: PlatformAppBar(title: Text("Match Info")),
+    return Scaffold(
+        appBar: AppBar(title: Text("Match Info")),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: SafeArea(child: body, bottom: false)));

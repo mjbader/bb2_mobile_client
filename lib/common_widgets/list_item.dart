@@ -1,7 +1,5 @@
 
-import 'package:flutter/widgets.dart';
-import 'package:bb2_mobile_app/cross_platform_widgets/platform_checkbox.dart';
-
+import 'package:flutter/material.dart';
 
 class ListItem extends StatelessWidget {
 
@@ -18,7 +16,7 @@ class ListItem extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          PlatformCheckbox(
+          Checkbox(
             value: isSelected,
             onChanged: onChanged,
           ),

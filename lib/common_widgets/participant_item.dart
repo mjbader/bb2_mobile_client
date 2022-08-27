@@ -31,6 +31,12 @@ class ParticipantItem extends StatelessWidget {
       coachName = coachNameElements.first.text;
     }
 
+    var logoFile = participant.findAllElements("RowTeam").first.findElements('Logo');
+    var logoUrl;
+    if (logoFile.isNotEmpty) {
+      logoUrl = 'https://cdn2.rebbl.net/images/logo/logo_${logoFile.first.text.toLowerCase()}.png';
+    }
+
 
     var nameColumn = Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -42,11 +48,22 @@ class ParticipantItem extends StatelessWidget {
         ]);
 
     var child = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (logoUrl != null)
+              Image.network(
+                logoUrl,
+                frameBuilder: (context, widget, frame, wasSynchronouslyLoaded) {
+                  if (frame == null) {
+                    return CircularProgressIndicator();
+                  }
+                  return widget;
+                },
+              ),
+            Container(width: 10),
             nameColumn,
           ]),
     );

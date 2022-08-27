@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:xml/xml.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
@@ -49,19 +48,19 @@ class _ParticipantListState extends State<ParticipantList> {
   }
 
   void deleteTicket(XmlElement participant) {
-    showPlatformDialog<void>(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AlertDialog(
             title: Text('Are you sure delete this ticket?'),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Delete'),
                 onPressed: () {
                   var ticketId = participant
@@ -88,19 +87,19 @@ class _ParticipantListState extends State<ParticipantList> {
   }
 
   void removeParticipant(XmlElement participant) {
-    showPlatformDialog<void>(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AlertDialog(
             title: Text('Are you sure remove this participant?'),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Remove'),
                 onPressed: () {
                   var teamId = participant
@@ -129,19 +128,19 @@ class _ParticipantListState extends State<ParticipantList> {
   }
 
   void forceAcceptDialog(XmlElement participant) {
-    showPlatformDialog<void>(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return PlatformAlertDialog(
+          return AlertDialog(
             title: Text('Are you sure force accept this ticket?'),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Accept'),
                 onPressed: () => forceAccept(participant),
               ),
@@ -213,7 +212,7 @@ class _ParticipantListState extends State<ParticipantList> {
           ];
           var nameElements = elements?[index].findAllElements("RowTeam").first.findElements("Name");
           if (forceAccept != null && nameElements != null && nameElements.isNotEmpty && nameElements.first.text.toLowerCase().contains("[admin]")) {
-            actions += [PlatformIconButton(
+            actions += [IconButton(
                 icon: Icon(Icons.check),
                 padding: EdgeInsets.only(right: 10),
                 color: Colors.red,
@@ -231,7 +230,7 @@ class _ParticipantListState extends State<ParticipantList> {
                   Row(children: actions)
                 ],
               ),
-              Divider()
+              Divider(height: 16,)
             ],
           );
         }, childCount: elements?.length)));
@@ -252,7 +251,7 @@ class _ParticipantListState extends State<ParticipantList> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: PlatformCircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             ),
           ],
         ),

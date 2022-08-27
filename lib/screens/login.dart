@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'dart:io';
 
@@ -32,13 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
         content: new Text(error),
       ));
     } else {
-      showPlatformDialog(
+      showDialog(
         context: context,
-        builder: (_) => PlatformAlertDialog(
+        builder: (_) => AlertDialog(
           title: Text('Error'),
           content: Text(error),
           actions: <Widget>[
-            PlatformDialogAction(child: Text('OK'), onPressed: () => Navigator.of(context).pop(),),
+            TextButton(child: Text('OK'), onPressed: () => Navigator.of(context).pop(),),
           ],
         ),
       );
@@ -74,19 +73,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     Widget button =  Builder(
-        builder: (context) => PlatformTextButton(
+        builder: (context) => TextButton(
       child: Text('Login'),
       onPressed: isLoginButtonEnabled() ? () => loginPressed() : null,
       )
     );
 
     if (_isLoading) {
-      button = PlatformCircularProgressIndicator();
+      button = CircularProgressIndicator();
     }
 
-    return PlatformScaffold(
+    return Scaffold(
       backgroundColor: AppTheme.getLoginBackgroundColor(),
-      widgetKey: _scaffoldKey,
+      key: _scaffoldKey,
       body: Center(
           child: Padding(
               padding: EdgeInsets.all(20),
@@ -123,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[Text('Remember Me  '),
-                    PlatformSwitch(
+                    Switch(
                       value: _rememberMe,
                       onChanged: (value) => setState(() {
                         _rememberMe = value;

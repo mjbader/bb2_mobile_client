@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:bb2_mobile_app/cross_platform_widgets/cpactionsheet.dart';
 import 'dart:io';
@@ -16,7 +15,6 @@ import 'package:bb2_mobile_app/screens/admin_match.dart';
 import 'package:bb2_mobile_app/screens/coach_search_delegate.dart';
 import 'package:bb2_mobile_app/types.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
-import 'package:bb2_mobile_app/common_widgets/app_alert_dialog.dart';
 
 
 class MatchesScreen extends StatefulWidget {
@@ -105,10 +103,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void advanceRound() {
-    showPlatformDialog<void>(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return AppAlertDialog(
+          return AlertDialog(
             title: Text('Are you sure you want to advance the round?'),
             content: SingleChildScrollView(
               child: ListBody(
@@ -118,13 +116,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
               ),
             ),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Yes'),
                 onPressed: () {
                   var compId = _compData!
@@ -152,19 +150,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void startComp() {
-    showPlatformDialog<void>(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return AppAlertDialog(
+          return AlertDialog(
             title: Text('Are you sure you want to start the round?'),
             actions: <Widget>[
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              PlatformDialogAction(
+              TextButton(
                 child: Text('Yes'),
                 onPressed: () {
                   var compId = _compData!
@@ -271,7 +269,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.info, color: AppTheme.getTextColor()),
+                Icon(Icons.info),
                 Text('  Info', style: TextStyle(fontSize: 20))
               ],
             ),
@@ -299,20 +297,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
     switch (await showPlatformActionSheet(
         context: context, title: 'Admin Match Options', children: children)) {
       case _MatchOptions.validate:
-        showPlatformDialog(
+        showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AppAlertDialog(
+              return AlertDialog(
                 title: Text("Are you sure wish to validate this match?"),
                 content: SingleChildScrollView(child: match),
                 actions: <Widget>[
-                  PlatformDialogAction(
+                  TextButton(
                     child: Text('Cancel'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  PlatformDialogAction(
+                  TextButton(
                     child: Text('Validate'),
                     onPressed: () {
                       _validateMatch(matchId);
@@ -324,20 +322,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
             });
         break;
       case _MatchOptions.reset:
-        showPlatformDialog(
+        showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AppAlertDialog(
+              return AlertDialog(
                 title: Text("Are you sure wish to reset this match?"),
                 content: SingleChildScrollView(child: match),
                 actions: <Widget>[
-                  PlatformDialogAction(
+                  TextButton(
                     child: Text('Cancel'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  PlatformDialogAction(
+                  TextButton(
                     child: Text('Reset'),
                     onPressed: () {
                       _resetMatch(matchId);
@@ -353,8 +351,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             match.matchElement.findAllElements("IdMatchRecord").first.text;
         Navigator.push(
             context,
-            platformPageRoute(
-                context: context,
+            MaterialPageRoute(
                 builder: (context) => MatchReport(
                       matchId: recordId,
                     )));
@@ -366,8 +363,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             match.matchElement.findElements("IdTeamAway").first.firstChild!.text;
         Navigator.push(
             context,
-            platformPageRoute(
-                context: context,
+            MaterialPageRoute(
                 builder: (context) => AdminMatchScreen(
                       matchId: matchId,
                       compId: widget.compId,
@@ -466,15 +462,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
   void goToParticipants() {
     Navigator.push(
         context,
-        platformPageRoute(
-            context: context,
+        MaterialPageRoute(
             maintainState: false,
             builder: (context) {
-              return PlatformScaffold(
-                appBar: PlatformAppBar(
+              return Scaffold(
+                appBar: AppBar(
                   title: Text("${widget.title}"),
-                  trailingActions: [
-                    PlatformIconButton(
+                  actions: [
+                    IconButton(
                       icon: Icon(Icons.search),
                       onPressed: searchForTeam,
                     )
@@ -540,7 +535,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: PlatformCircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             ),
           ],
         ),
@@ -557,14 +552,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
         children += [
           Padding(
             padding: EdgeInsets.all(20),
-            child: PlatformCircularProgressIndicator(),
+            child: CircularProgressIndicator(),
           )
         ];
       } else {
         children += [
           Padding(
             padding: EdgeInsets.all(10),
-            child: PlatformTextButton(
+            child: TextButton(
 //              icon: Icon(Icons.play_arrow),
               child: Text('Start Competition'),
               onPressed: onPressed,
@@ -620,11 +615,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            PlatformIconButton(
+            IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: _selectedRound > 1 ? decrementCurrentRound : null),
             Text('Week $_selectedRound', style: TextStyle(fontSize: 20.0)),
-            PlatformIconButton(
+            IconButton(
               icon: Icon(Icons.arrow_forward),
               onPressed:
                   _selectedRound < _rounds ? incrementCurrentRound : null,
@@ -636,13 +631,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
       ];
 
       if (_requestSending) {
-        children += [PlatformCircularProgressIndicator()];
+        children += [CircularProgressIndicator()];
       } else if (_currentRound == _selectedRound &&
           _compStatus != CompetitionStatus.completed) {
         Function()? onPressed = isReadyToAdvance() ? advanceRound : null;
 
         children += [
-          PlatformTextButton(
+          TextButton(
 //            icon: Icon(Icons.play_arrow),
             child: Text('Advance Week'),
             onPressed: onPressed,
@@ -664,14 +659,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
         !isReadyToStart()) {
       if (_inComp.length < _maxTeams) {
         actions += [
-          PlatformIconButton(
+          IconButton(
             icon: Icon(Icons.plus_one),
             onPressed: addAI,
           ),
         ];
       }
       actions += [
-        PlatformIconButton(
+        IconButton(
           icon: Icon(Icons.search),
           onPressed: searchForTeam,
         )
@@ -680,16 +675,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     if (_compStatus == 1) {
       actions += [
-        PlatformIconButton(
+        IconButton(
           icon: Icon(Icons.person),
           onPressed: goToParticipants,
         )
       ];
     }
 
-    return PlatformScaffold(
+    return Scaffold(
         appBar:
-            PlatformAppBar(title: Text(widget.title), trailingActions: actions),
+            AppBar(title: Text(widget.title), actions: actions),
         body: SafeArea(child: body, bottom: false));
   }
 }

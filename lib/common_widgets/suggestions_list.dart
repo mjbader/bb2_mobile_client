@@ -37,8 +37,7 @@ class _SuggestionListState extends State<SuggestionList> {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemCount: suggestions.length,
-        separatorBuilder: (BuildContext context, int index) =>
-            Container(color: Theme.of(context).dividerColor, height: 0.5),
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
           var team = suggestions[index][0];
           var coach = suggestions[index][1];

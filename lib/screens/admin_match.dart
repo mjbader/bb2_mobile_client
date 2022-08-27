@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:bb2_mobile_app/common_widgets//number_textfield_buttons.dart';
 
 import 'package:BB2Admin/bb2admin.dart';
@@ -46,7 +45,7 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
 
   Widget randWinSwitch(_TeamType teamType) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      PlatformSwitch(
+      Switch(
           onChanged: (bool value) {
             setState(() {
               if (teamType == _TeamType.home)
@@ -151,7 +150,7 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: PlatformCircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             ),
           ],
         ),
@@ -171,7 +170,7 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                PlatformSwitch(
+                Switch(
                   onChanged: (bool value) {
                     setState(() {
                       isConcede = value;
@@ -182,15 +181,15 @@ class _AdminMatchScreenState extends State<AdminMatchScreen> {
                 Text('Is Concede', style: TextStyle(fontSize: 16.0))
               ],
             ),
-          PlatformTextButton(
+          TextButton(
             child: Text("Submit"),
             onPressed: () => onSubmit(context),
           ),
         ],
       );
     }
-    return PlatformScaffold(
-        appBar: PlatformAppBar(title: Text("Admin Match")),
+    return Scaffold(
+        appBar: AppBar(title: Text("Admin Match")),
         body: SafeArea(child: Padding(child: body, padding: EdgeInsets.symmetric(vertical: 50),), bottom: false));
   }
 }
