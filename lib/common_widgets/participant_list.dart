@@ -53,6 +53,7 @@ class _ParticipantListState extends State<ParticipantList> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Are you sure delete this ticket?'),
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             actions: <Widget>[
               TextButton(
                 child: Text('Cancel'),
@@ -92,6 +93,7 @@ class _ParticipantListState extends State<ParticipantList> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Are you sure remove this participant?'),
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             actions: <Widget>[
               TextButton(
                 child: Text('Cancel'),
@@ -133,6 +135,7 @@ class _ParticipantListState extends State<ParticipantList> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Are you sure force accept this ticket?'),
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             actions: <Widget>[
               TextButton(
                 child: Text('Cancel'),
@@ -211,7 +214,7 @@ class _ParticipantListState extends State<ParticipantList> {
                 onPressed: () => deleteFunction(elements?[index]))
           ];
           var nameElements = elements?[index].findAllElements("RowTeam").first.findElements("Name");
-          if (forceAccept != null && nameElements != null && nameElements.isNotEmpty && nameElements.first.text.toLowerCase().contains("[admin]")) {
+          if (forceAccept != null && nameElements != null && nameElements.isNotEmpty) {
             actions += [IconButton(
                 icon: Icon(Icons.check),
                 padding: EdgeInsets.only(right: 10),
@@ -301,7 +304,7 @@ class _ParticipantListState extends State<ParticipantList> {
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.getBackgroundColor(),
+      backgroundColor: AppTheme.getBackgroundColor(context),
       body: body,
     );
   }

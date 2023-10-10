@@ -9,6 +9,8 @@ import 'package:bb2_mobile_app/types.dart';
 import 'package:bb2_mobile_app/common_widgets/list_item.dart';
 import 'package:xml/xml.dart';
 
+import '../themes/themes.dart';
+
 class CompetitionsScreen extends StatefulWidget {
   CompetitionsScreen({Key? key, required this.title, required this.leagueId}) : super(key: key);
   final String title;
@@ -64,6 +66,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             title: Text('Are you sure you want to delete these competitions?'),
             content: Text('This action is irreversible.'),
             actions: <Widget>[

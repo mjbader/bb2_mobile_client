@@ -73,6 +73,16 @@ class _MatchReportState extends State<MatchReport> {
       }
     }
 
+    var coachResults = _matchRecord!.findAllElements('CoachResult');
+    var isHome = true;
+    var ipAddressHashMap = HashMap<String, String>();
+    for (var coachResult in coachResults) {
+      var ipAddress = coachResult.getElement('IpAddress')?.text;
+      ipAddressHashMap[isHome ? 'HomeValue' : 'AwayValue'] = ipAddress!;
+      isHome = false;
+    }
+    hashMap['IpAddress'] = ipAddressHashMap;
+
     for (var statType in statTypes) {
       for (var statName in statNames) {
         for (var teamType in _teamTypes) {

@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
+          backgroundColor: AppTheme.getAlertBackgroundcolor(),
           title: Text('Error'),
           content: Text(error),
           actions: <Widget>[

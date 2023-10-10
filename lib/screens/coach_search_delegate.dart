@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:BB2Admin/bb2admin.dart';
 import 'package:bb2_mobile_app/common_widgets/participant_item.dart';
 import 'package:bb2_mobile_app/common_widgets/suggestions_list.dart';
 import 'package:bb2_mobile_app/themes/themes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml/xml.dart';
@@ -22,12 +19,10 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
   List<String> teamSuggestions = [];
   List<String> coachSuggestions = [];
 
-  var suggestions = ["[ADMIN]"];
-
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      primaryColor: AppTheme.getBackgroundColor(),
+      primaryColor: AppTheme.getBackgroundColor(context),
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
       primaryTextTheme: theme.textTheme,
     );
@@ -56,7 +51,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
           hintStyle: theme.inputDecorationTheme.hintStyle,
         ),
         onChanged: (coachQuery) {
-          triggerRerender();
+          triggerRerender(context);
         },
         onSubmitted: (String _) {
           showResults(context);
@@ -66,9 +61,9 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
     );
   }
 
-  void triggerRerender() {
+  void triggerRerender(BuildContext context) {
     var temp = query;
-    query = "";
+    query = " ";
     Future.delayed(new Duration(milliseconds: 1), () {
       query = temp;
     });
@@ -88,6 +83,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Are you sure wish to send this team a ticket?"),
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             content: SingleChildScrollView(child: cell),
             actions: <Widget>[
               TextButton(
@@ -107,7 +103,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
         });
   }
 
-  void toggleFavoriteQuery() async {
+  void toggleFavoriteQuery(BuildContext context) async {
     var add = true;
     for (var i = 0; i < teamSuggestions.length; ++i) {
       if (query == teamSuggestions[i] &&
@@ -125,7 +121,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
     }
     prefs?.setStringList("search_team_query_suggestions", teamSuggestions);
     prefs?.setStringList("search_coach_query_suggestions", coachSuggestions);
-    triggerRerender();
+    triggerRerender(context);
   }
 
   @override
@@ -142,37 +138,33 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
             }),
       ];
     }
-    if (Platform.isIOS)
-      actions += [
-        CupertinoButton(
-          child: Text("Close"),
-          onPressed: () => close(context, null),
-        )
-      ];
-
     return actions;
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    if (query.length > 2 || coachController.text.length > 2) {
-      var starIcon = Icon(Icons.star_border, color: Colors.amber);
-      if (teamSuggestions.contains(query) &&
-          coachSuggestions.contains(coachController.text)) {
-        starIcon = Icon(Icons.star, color: Colors.amber);
-      }
-      return TextButton(
-        child: starIcon,
-        onPressed: toggleFavoriteQuery,
-      );
-    } else {
-      return Icon(Icons.search);
-    }
+    var icons = [
+        IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => close(context, null)),
+    ];
+    // if (query.length > 2 || coachController.text.length > 2) {
+    //   var starIcon = Icon(Icons.star_border, color: Colors.amber);
+    //   if (teamSuggestions.contains(query) &&
+    //       coachSuggestions.contains(coachController.text)) {
+    //     starIcon = Icon(Icons.star, color: Colors.amber);
+    //   }
+    //   icons += [IconButton(
+    //     icon: starIcon,
+    //     onPressed: () => toggleFavoriteQuery(context),
+    //   )];
+    // }
+    return Row(children: icons,);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) => Container(
-      color: AppTheme.getBackgroundColor(),
+      color: AppTheme.getBackgroundColor(context),
       child: Column(
         children: <Widget>[
           coachSearch,
@@ -190,7 +182,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
   @override
   Widget buildResults(BuildContext context) {
     Widget body = Scaffold(
-      backgroundColor: AppTheme.getBackgroundColor(),
+      backgroundColor: AppTheme.getBackgroundColor(context),
     );
     if (query.length > 2 || coachController.text.length > 2) {
       body = FutureBuilder<Iterable<XmlElement>>(
@@ -238,7 +230,7 @@ class CoachSearchDelegate extends SearchDelegate<CoachAndTeam?> {
           });
     }
     return Container(
-        color: AppTheme.getBackgroundColor(),
+        color: AppTheme.getBackgroundColor(context),
         child: Column(
           children: <Widget>[
             coachSearch,

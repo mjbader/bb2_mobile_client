@@ -34,7 +34,7 @@ class ParticipantItem extends StatelessWidget {
     var logoFile = participant.findAllElements("RowTeam").first.findElements('Logo');
     var logoUrl;
     if (logoFile.isNotEmpty) {
-      logoUrl = 'https://cdn2.rebbl.net/images/logo/logo_${logoFile.first.text.toLowerCase()}.png';
+      logoUrl = 'https://cdn.rebbl.net/images/logo/logo_${logoFile.first.text.toLowerCase()}.png';
     }
 
 

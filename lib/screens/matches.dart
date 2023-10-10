@@ -108,6 +108,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Are you sure you want to advance the round?'),
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -155,6 +156,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Are you sure you want to start the round?'),
+            backgroundColor: AppTheme.getAlertBackgroundcolor(),
             actions: <Widget>[
               TextButton(
                 child: Text('Cancel'),
@@ -302,6 +304,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Are you sure wish to validate this match?"),
+                backgroundColor: AppTheme.getAlertBackgroundcolor(),
                 content: SingleChildScrollView(child: match),
                 actions: <Widget>[
                   TextButton(
@@ -327,6 +330,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Are you sure wish to reset this match?"),
+                backgroundColor: AppTheme.getAlertBackgroundcolor(),
                 content: SingleChildScrollView(child: match),
                 actions: <Widget>[
                   TextButton(
